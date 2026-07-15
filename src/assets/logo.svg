@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" fill="none">
+  <!-- Stylized Geometric Logo Icon -->
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#1B2450" />
+  <path d="M11 10 L21 22 M21 10 L11 22" stroke="#FF5100" stroke-width="3" stroke-linecap="round" />
+  <circle cx="16" cy="16" r="3" fill="#FAFAF8" />
+
+  <!-- Horizontal Wordmark -->
+  <text x="40" y="22" font-family="Satoshi, sans-serif" font-size="16" font-weight="900" fill="#1B2450" letter-spacing="1.5">CREOVIZ</text>
+  <circle cx="122" cy="20" r="2" fill="#FF5100" />
+</svg>

@@ -1,0 +1,217 @@
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Cabinet Grotesk", sans-serif;
+  
+  /* Font Weight Mappings */
+  --font-weight-light: 400;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+  
+  /* Brand Color Tokens */
+  --color-primary: #1B2450;
+  --color-primary-light: #1B2450;
+  --color-accent: #FF5A1F;
+  --color-accent-hover: #E54C12;
+  --color-accent-gold: #FF5A1F;
+  --color-accent-gold-dark: #E54C12;
+  --color-bg-light: #FFFFFF;
+  --color-bg-gray: #F7F7F8;
+  --color-bg-dark: #0C0D14;
+  --color-text-dark: #111111;
+  --color-text-secondary: #555555;
+  --color-text-muted: #888888;
+  
+  /* Glassmorphism Color Tokens */
+  --color-glass-bg: rgba(255, 255, 255, 0.75);
+  --color-glass-border: rgba(27, 36, 80, 0.06);
+  --color-glass-border-glow: rgba(255, 90, 31, 0.15);
+  
+  /* Border Radius Presets */
+  --radius-premium-sm: 8px;
+  --radius-premium-md: 16px;
+  --radius-premium-lg: 24px;
+  --radius-premium-full: 9999px;
+  
+  /* Premium Shadows */
+  --shadow-premium-sm: 0 2px 8px rgba(27, 36, 80, 0.02);
+  --shadow-premium-md: 0 12px 36px rgba(27, 36, 80, 0.04);
+  --shadow-premium-lg: 0 24px 64px rgba(27, 36, 80, 0.06);
+  --shadow-premium-glass: 0 8px 32px 0 rgba(27, 36, 80, 0.02);
+  
+  /* Transition Timing */
+  --transition-timing-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom Base Styles */
+@layer base {
+  body {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar for premium theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-light);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(27, 36, 80, 0.1);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(27, 36, 80, 0.2);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-primary);
+    font-weight: 700;
+    letter-spacing: 0.015em;
+    line-height: 1.25;
+  }
+
+  p {
+    font-weight: 400;
+    line-height: 1.68;
+    letter-spacing: 0.005em;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  /* SVG Noise Overlay */
+  .noise-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.02; /* Extremely subtle organic grain */
+    pointer-events: none;
+    z-index: 2;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Premium Glassmorphism */
+  .glass-panel {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: var(--shadow-premium-glass);
+  }
+  
+  .glass-panel-interactive {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: var(--shadow-premium-glass);
+    transition: all 0.5s var(--transition-timing-premium);
+  }
+  .glass-panel-interactive:hover {
+    border-color: var(--color-glass-border-glow);
+    box-shadow: var(--shadow-premium-md), 0 0 20px rgba(255, 81, 0, 0.05);
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Hover animations */
+  .hover-lift {
+    transition: transform 0.5s var(--transition-timing-premium), box-shadow 0.5s var(--transition-timing-premium);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-premium-md);
+  }
+
+  /* Keyframe Class Assigns */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float-delayed 8s ease-in-out infinite;
+  }
+  .animate-marquee {
+    animation: marquee 20s linear infinite; /* Slightly faster scroll pace */
+  }
+  .animate-glow-breathe {
+    animation: breathe 12s ease-in-out infinite;
+  }
+  .animate-particle-drift {
+    animation: drift 12s ease-in-out infinite;
+  }
+  .animate-light-sweep {
+    animation: light-sweep 4s ease-in-out infinite;
+  }
+  .animate-concentric-pulse {
+    animation: concentric-pulse 10s ease-in-out infinite;
+  }
+}
+
+/* Custom CSS Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(14px) rotate(-0.5deg); }
+}
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.35; }
+  33% { transform: scale(1.1) translate(15px, -15px); opacity: 0.45; }
+  66% { transform: scale(0.9) translate(-15px, 20px); opacity: 0.3; }
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0px, 0px); }
+  50% { transform: translate(20px, -25px); }
+}
+@keyframes light-sweep {
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  40% { transform: translateX(150%) skewX(-15deg); }
+  100% { transform: translateX(150%) skewX(-15deg); }
+}
+@keyframes concentric-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+/* Smooth Scrolling utilities */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
