@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import {
   MapPin,
   Phone,
@@ -234,6 +235,17 @@ export const Contact: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Initialize EmailJS with Public Key on mount
+  useEffect(() => {
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (publicKey) {
+      emailjs.init({
+        publicKey: publicKey,
+      });
+    }
+  }, []);
 
   // Extract search params on load or change
   useEffect(() => {
@@ -278,47 +290,52 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.name || !formData.email || !formData.company || !formData.phone || !formData.message) {
+    if (!formData.name.trim() || !formData.email.trim() || !formData.company.trim() || !formData.phone.trim() || !formData.message.trim()) {
+      setErrorMessage('Please fill in all required fields.');
       setSubmitStatus('error');
       return;
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage('Please enter a valid email address.');
       setSubmitStatus('error');
       return;
     }
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setErrorMessage('');
 
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_creoviz';
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_creoviz';
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'user_creoviz';
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          service_id: serviceId,
-          template_id: templateId,
-          user_id: publicKey,
-          template_params: {
-            full_name: formData.name,
-            company: formData.company,
-            email: formData.email,
-            phone: formData.phone,
-            service: formData.service,
-            project_details: formData.message,
-          },
-        }),
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS service is not configured. Missing VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, or VITE_EMAILJS_PUBLIC_KEY.');
+      }
+
+      // Re-initialize to ensure current credentials are active
+      emailjs.init({
+        publicKey: publicKey,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send email via EmailJS');
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          full_name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          project_details: formData.message,
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error(response.text || 'Failed to send email via EmailJS.');
       }
 
       setSubmitStatus('success');
@@ -330,8 +347,9 @@ export const Contact: React.FC = () => {
         service: 'Other',
         message: '',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('EmailJS Error:', error);
+      setErrorMessage(error?.text || error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -671,7 +689,7 @@ export const Contact: React.FC = () => {
                   )}
                   {submitStatus === 'error' && (
                     <span className="text-xs font-sans text-[#FF5A1F] text-center font-medium mt-1">
-                      Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.
+                      {errorMessage || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.'}
                     </span>
                   )}
                   
