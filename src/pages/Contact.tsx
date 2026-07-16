@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import emailjs from '@emailjs/browser';
+
 import {
   MapPin,
   Phone,
@@ -107,7 +107,7 @@ const ContactHeroVisual: React.FC<ContactHeroVisualProps> = ({ mouseX, mouseY })
             <div key={i} className="border-[0.5px] border-white" />
           ))}
         </div>
-        
+
         {/* Title / Meeting Header */}
         <div className="flex justify-between items-start relative z-10">
           <div className="flex flex-col gap-1 text-left">
@@ -237,15 +237,7 @@ export const Contact: React.FC = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Initialize EmailJS with Public Key on mount
-  useEffect(() => {
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    if (publicKey) {
-      emailjs.init({
-        publicKey: publicKey,
-      });
-    }
-  }, []);
+
 
   // Extract search params on load or change
   useEffect(() => {
@@ -254,7 +246,7 @@ export const Contact: React.FC = () => {
     if (val) {
       const normalized = val.toLowerCase();
       let service = 'Other';
-      
+
       if (normalized.includes('linkedin')) {
         service = 'LinkedIn Branding';
       } else if (normalized.includes('logo') || normalized.includes('identity') || normalized.includes('branding')) {
@@ -266,9 +258,9 @@ export const Contact: React.FC = () => {
       } else if (normalized.includes('web') || normalized.includes('design') || normalized.includes('ui')) {
         service = 'Website Design';
       }
-      
+
       setFormData(prev => ({ ...prev, service }));
-      
+
       // Smooth scroll to form section on query load
       setTimeout(() => {
         formSectionRef.current?.scrollIntoView({
@@ -288,14 +280,14 @@ export const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!formData.name.trim() || !formData.email.trim() || !formData.company.trim() || !formData.phone.trim() || !formData.message.trim()) {
       setErrorMessage('Please fill in all required fields.');
       setSubmitStatus('error');
       return;
     }
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
       setErrorMessage('Please enter a valid email address.');
@@ -308,34 +300,25 @@ export const Contact: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS service is not configured. Missing VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, or VITE_EMAILJS_PUBLIC_KEY.');
-      }
-
-      // Re-initialize to ensure current credentials are active
-      emailjs.init({
-        publicKey: publicKey,
-      });
-
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          full_name: formData.name,
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
           company: formData.company,
           email: formData.email,
           phone: formData.phone,
           service: formData.service,
-          project_details: formData.message,
-        }
-      );
+          message: formData.message,
+        }),
+      });
 
-      if (response.status !== 200) {
-        throw new Error(response.text || 'Failed to send email via EmailJS.');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send inquiry.');
       }
 
       setSubmitStatus('success');
@@ -348,8 +331,8 @@ export const Contact: React.FC = () => {
         message: '',
       });
     } catch (error: any) {
-      console.error('EmailJS Error:', error);
-      setErrorMessage(error?.text || error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
+      console.error('Submission Error:', error);
+      setErrorMessage(error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -430,7 +413,7 @@ export const Contact: React.FC = () => {
               >
                 Have a project in mind? We'd love to hear about your ideas and help transform them into impactful creative solutions tailored to your business.
               </motion.p>
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -451,16 +434,16 @@ export const Contact: React.FC = () => {
                 >
                   Start Your Project
                 </Button>
-                 <Button
-                   variant="outline"
-                   size="md"
-                   href="https://wa.me/919409073599?text=Hello%20Creoviz!%20I%20would%20like%20to%20discuss%20a%20new%20project."
-                   external={true}
-                   icon={<MessageSquare className="w-3.5 h-3.5 text-[#FF5A1F]" />}
-                   className="w-full sm:w-auto border-white/20 text-white hover:border-white hover:bg-white/5 text-center justify-center"
-                 >
-                   Chat on WhatsApp
-                 </Button>
+                <Button
+                  variant="outline"
+                  size="md"
+                  href="https://wa.me/919409073599?text=Hello%20Creoviz!%20I%20would%20like%20to%20discuss%20a%20new%20project."
+                  external={true}
+                  icon={<MessageSquare className="w-3.5 h-3.5 text-[#FF5A1F]" />}
+                  className="w-full sm:w-auto border-white/20 text-white hover:border-white hover:bg-white/5 text-center justify-center"
+                >
+                  Chat on WhatsApp
+                </Button>
               </motion.div>
             </div>
 
@@ -692,7 +675,7 @@ export const Contact: React.FC = () => {
                       {errorMessage || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.'}
                     </span>
                   )}
-                  
+
                   {/* Privacy note */}
                   <span className="text-[10px] text-[#888888] font-sans font-light text-center">
                     Your information will remain completely confidential.
