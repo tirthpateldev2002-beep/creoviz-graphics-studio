@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import emailjs from '@emailjs/browser';
+
 
 import {
   MapPin,
@@ -301,37 +301,25 @@ export const Contact: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS service is not configured. Missing VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, or VITE_EMAILJS_PUBLIC_KEY.');
-      }
-
-      // Initialize EmailJS
-      emailjs.init({
-        publicKey: publicKey,
-      });
-
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          full_name: formData.name,
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
           company: formData.company,
           email: formData.email,
           phone: formData.phone,
           service: formData.service,
-          project_details: formData.message,
-        },
-        {
-          publicKey: publicKey,
-        }
-      );
+          message: formData.message,
+        }),
+      });
 
-      if (response.status !== 200) {
-        throw new Error(response.text || 'Failed to send email via EmailJS.');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send inquiry.');
       }
 
       setSubmitStatus('success');
@@ -344,8 +332,8 @@ export const Contact: React.FC = () => {
         message: '',
       });
     } catch (error: any) {
-      console.error('EmailJS Error:', error);
-      setErrorMessage(error?.text || error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
+      console.error('Submission Error:', error);
+      setErrorMessage(error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
