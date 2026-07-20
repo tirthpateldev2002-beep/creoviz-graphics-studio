@@ -8,10 +8,6 @@ export const BannersPortfolio: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
-
   // ESC Key listener for Lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

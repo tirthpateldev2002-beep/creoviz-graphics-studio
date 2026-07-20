@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -715,10 +715,7 @@ export const ServiceDetail: React.FC = () => {
   const navigate = useNavigate();
   const [activeFaqIndex, setActiveFaqIndex] = useState<number | null>(null);
 
-  // Scroll to top when navigation occurs
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [serviceId]);
+
 
   // Load content
   const content = serviceId ? SERVICES_DATA[serviceId] : null;

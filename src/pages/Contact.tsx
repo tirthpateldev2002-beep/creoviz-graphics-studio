@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 
 
 import {
@@ -206,6 +206,7 @@ const ContactHeroVisual: React.FC<ContactHeroVisualProps> = ({ mouseX, mouseY })
 // ----------------------------------------------------
 export const Contact: React.FC = () => {
   const location = useLocation();
+  const navType = useNavigationType();
   const formSectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -225,28 +226,153 @@ export const Contact: React.FC = () => {
     mouseY.set(yNormalized * 35);
   };
 
-  const [formData, setFormData] = useState({
+  const [formValues, setFormValues] = useState({
     name: '',
     company: '',
     email: '',
     phone: '',
-    service: 'Other',
-    message: '',
+    service: '',
+    details: ''
   });
 
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
+  const validateField = (name: string, value: string) => {
+    let error = '';
+    if (!value.trim()) {
+      if (name === 'name') error = 'Full Name is required';
+      else if (name === 'company') error = 'Business / Company Name is required';
+      else if (name === 'email') error = 'Email Address is required';
+      else if (name === 'phone') error = 'Phone Number is required';
+      else if (name === 'service') error = 'Please select a service';
+      else if (name === 'details') error = 'Project details are required';
+    } else if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value.trim())) {
+        error = 'Please enter a valid email address';
+      }
+    }
+    return error;
+  };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setFormErrors(prev => ({ ...prev, [name]: error }));
+  };
 
-  // Extract search params on load or change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prev => ({ ...prev, [name]: value }));
+    if (touched[name]) {
+      const error = validateField(name, value);
+      setFormErrors(prev => ({ ...prev, [name]: error }));
+    }
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    // Touch all fields
+    const newTouched = {
+      name: true,
+      company: true,
+      email: true,
+      phone: true,
+      service: true,
+      details: true
+    };
+    setTouched(newTouched);
+
+    // Validate all fields
+    const newErrors: Record<string, string> = {};
+    Object.keys(formValues).forEach(key => {
+      const val = formValues[key as keyof typeof formValues];
+      const error = validateField(key, val);
+      if (error) {
+        newErrors[key] = error;
+      }
+    });
+
+    setFormErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setSubmitStatus('error');
+      setErrorMessage('Please fill in all required fields correctly before sending.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const apiKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+      if (!apiKey) {
+        throw new Error('Web3Forms Access Key is missing. Please set VITE_WEB3FORMS_ACCESS_KEY in environment.');
+      }
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: apiKey,
+          name: formValues.name,
+          company: formValues.company,
+          email: formValues.email,
+          phone: formValues.phone,
+          service: formValues.service,
+          details: formValues.details,
+          subject: `New Project Inquiry: ${formValues.service || 'General'} - from ${formValues.name}`,
+          from_name: formValues.name,
+          replyto: formValues.email
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus('success');
+        setFormValues({
+          name: '',
+          company: '',
+          email: '',
+          phone: '',
+          service: '',
+          details: ''
+        });
+        setTouched({});
+        setFormErrors({});
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage(data.message || 'Failed to send inquiry. Please try again.');
+      }
+    } catch (err: any) {
+      console.error('Web3Forms submission error:', err);
+      setSubmitStatus('error');
+      setErrorMessage(err.message || 'An unexpected error occurred while sending. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Scroll to section and pre-fill service on query load
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const val = params.get('service') || params.get('package') || params.get('project') || params.get('interest') || '';
     if (val) {
       const normalized = val.toLowerCase();
-      let service = 'Other';
+      let service = '';
 
       if (normalized.includes('linkedin')) {
         service = 'LinkedIn Branding';
@@ -258,9 +384,11 @@ export const Contact: React.FC = () => {
         service = 'Business Essentials';
       } else if (normalized.includes('web') || normalized.includes('design') || normalized.includes('ui')) {
         service = 'Website Design';
+      } else {
+        service = 'Other';
       }
 
-      setFormData(prev => ({ ...prev, service }));
+      setFormValues(prev => ({ ...prev, service }));
 
       // Smooth scroll to form section on query load
       setTimeout(() => {
@@ -270,75 +398,11 @@ export const Contact: React.FC = () => {
         });
       }, 300);
     } else {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [location]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Basic validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.company.trim() || !formData.phone.trim() || !formData.message.trim()) {
-      setErrorMessage('Please fill in all required fields.');
-      setSubmitStatus('error');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) {
-      setErrorMessage('Please enter a valid email address.');
-      setSubmitStatus('error');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          company: formData.company,
-          email: formData.email,
-          phone: formData.phone,
-          service: formData.service,
-          message: formData.message,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send inquiry.');
+      if (navType !== 'POP') {
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }
-
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        company: '',
-        email: '',
-        phone: '',
-        service: 'Other',
-        message: '',
-      });
-    } catch (error: any) {
-      console.error('Submission Error:', error);
-      setErrorMessage(error?.message || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.');
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  }, [location, navType]);
 
   const whyWorkCards: BenefitData[] = [
     {
@@ -543,7 +607,7 @@ export const Contact: React.FC = () => {
                 href="https://wa.me/919409073599?text=Hello%20Creoviz!%20I%20would%20like%20to%20discuss%20a%20new%20project."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-3.5 py-4.5 rounded-full bg-[#1B2450] hover:bg-[#FF5A1F] text-white font-sans font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:shadow-[0_8px_25px_rgba(255,90,31,0.2)] hover:-translate-y-0.5 active:translate-y-0 text-center"
+                className="w-full flex items-center justify-center gap-3.5 py-4.5 rounded-full bg-[#1B2450] hover:bg-[#FF5A1F] text-white font-sans font-bold text-xs uppercase tracking-widest transition-all duration-500 hover:shadow-[0_8px_25px_rgba(255,90,31,0.25)] hover:-translate-y-0.5 active:translate-y-0 text-center"
               >
                 <span>Chat on WhatsApp</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -551,86 +615,159 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Right side form */}
-            <div className="lg:col-span-7 p-8 md:p-10 rounded-premium-lg bg-white/70 backdrop-blur-xl border border-[#1B2450]/6 shadow-premium-glass relative">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                {/* Name */}
-                <div className="flex flex-col">
-                  <label htmlFor="name" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300"
-                    placeholder="E.g., Alexander Wright"
-                  />
-                </div>
+            <div className="lg:col-span-7 p-8 md:p-10 rounded-3xl bg-white border border-[#1B2450]/6 shadow-premium relative overflow-hidden">
+              {/* Decorative background glow */}
+              <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-[#FF5A1F]/5 rounded-full blur-[50px] pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-[#1B2450]/5 rounded-full blur-[50px] pointer-events-none" />
 
-                {/* Company Name */}
-                <div className="flex flex-col">
-                  <label htmlFor="company" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
-                    Business / Company Name
-                  </label>
-                  <input
-                    id="company"
-                    type="text"
-                    required
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300"
-                    placeholder="E.g., Wright Industries"
-                  />
-                </div>
+              <div className="mb-8 relative z-10">
+                <h3 className="font-display font-extrabold text-xl md:text-2xl text-[#1B2450] uppercase tracking-wider mb-2">
+                  Start Your Project
+                </h3>
+                <p className="font-sans text-xs md:text-sm text-[#555555] font-light leading-relaxed">
+                  Fill out the form below to receive a custom design quote.
+                </p>
+              </div>
 
-                {/* Grid fields */}
+              <form onSubmit={handleFormSubmit} className="flex flex-col gap-6 relative z-10">
+                {/* Grid for Name & Company */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Email */}
+                  {/* Full Name */}
                   <div className="flex flex-col">
-                    <label htmlFor="email" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                    <label htmlFor="name" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formValues.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 ${
+                        touched.name && formErrors.name
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                          : touched.name && !formErrors.name
+                          ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                          : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                      }`}
+                      placeholder="E.g., Alexander Wright"
+                    />
+                    {touched.name && formErrors.name && (
+                      <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                        {formErrors.name}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Business / Company Name */}
+                  <div className="flex flex-col">
+                    <label htmlFor="company" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                      Business / Company Name
+                    </label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={formValues.company}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 ${
+                        touched.company && formErrors.company
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                          : touched.company && !formErrors.company
+                          ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                          : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                      }`}
+                      placeholder="E.g., Wright Industries"
+                    />
+                    {touched.company && formErrors.company && (
+                      <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                        {formErrors.company}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Grid for Email & Phone */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Email Address */}
+                  <div className="flex flex-col">
+                    <label htmlFor="email" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
                       Email Address
                     </label>
                     <input
                       id="email"
+                      name="email"
                       type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300"
+                      value={formValues.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 ${
+                        touched.email && formErrors.email
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                          : touched.email && !formErrors.email
+                          ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                          : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                      }`}
                       placeholder="alex@domain.com"
                     />
+                    {touched.email && formErrors.email && (
+                      <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                        {formErrors.email}
+                      </span>
+                    )}
                   </div>
 
-                  {/* Phone */}
+                  {/* Phone Number */}
                   <div className="flex flex-col">
-                    <label htmlFor="phone" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                    <label htmlFor="phone" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
                       Phone Number
                     </label>
                     <input
                       id="phone"
+                      name="phone"
                       type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300"
+                      value={formValues.phone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 ${
+                        touched.phone && formErrors.phone
+                          ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                          : touched.phone && !formErrors.phone
+                          ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                          : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                      }`}
                       placeholder="E.g., +91 94090 73599"
                     />
+                    {touched.phone && formErrors.phone && (
+                      <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                        {formErrors.phone}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {/* Dropdown Options */}
+                {/* Service Dropdown */}
                 <div className="flex flex-col">
-                  <label htmlFor="service" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                  <label htmlFor="service" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
                     Service Interested In
                   </label>
                   <select
                     id="service"
-                    value={formData.service}
-                    onChange={handleInputChange}
-                    className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300"
+                    name="service"
+                    value={formValues.service}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 ${
+                      touched.service && formErrors.service
+                        ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                        : touched.service && !formErrors.service
+                        ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                        : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                    }`}
                   >
+                    <option value="" disabled>Select a service...</option>
                     <option value="Logo & Brand Identity">Logo &amp; Brand Identity</option>
                     <option value="Creative Content">Creative Content</option>
                     <option value="LinkedIn Branding">LinkedIn Branding</option>
@@ -638,48 +775,80 @@ export const Contact: React.FC = () => {
                     <option value="Website Design">Website Design</option>
                     <option value="Other">Other</option>
                   </select>
+                  {touched.service && formErrors.service && (
+                    <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                      {formErrors.service}
+                    </span>
+                  )}
                 </div>
 
-                {/* Project Brief */}
+                {/* Project Details */}
                 <div className="flex flex-col">
-                  <label htmlFor="message" className="font-display font-semibold text-[10px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
-                    Tell Us About Your Project
+                  <label htmlFor="details" className="font-display font-semibold text-[9px] uppercase text-[#1B2450]/60 tracking-wider mb-2">
+                    Project Details
                   </label>
                   <textarea
-                    id="message"
+                    id="details"
+                    name="details"
                     rows={4}
-                    required
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full bg-[#F7F7F8] border border-[#1B2450]/6 rounded-lg px-4 py-3 text-sm text-[#1B2450] focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/10 transition-all duration-300 resize-none"
-                    placeholder="Describe your goals, requirements, target timeline, etc."
+                    value={formValues.details}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={`w-full bg-[#F7F7F8] border rounded-xl px-4 py-3.5 text-sm text-[#1B2450] focus:outline-none focus:ring-4 transition-all duration-300 resize-none ${
+                      touched.details && formErrors.details
+                        ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10'
+                        : touched.details && !formErrors.details
+                        ? 'border-green-500/30 focus:border-green-500 focus:ring-green-500/5'
+                        : 'border-[#1B2450]/6 focus:border-[#FF5A1F] focus:ring-[#FF5A1F]/10'
+                    }`}
+                    placeholder="Tell us about your brand goals, target timeline, key requirements, etc."
                   />
+                  {touched.details && formErrors.details && (
+                    <span className="text-[10px] font-sans text-red-500 mt-1.5 font-medium ml-1">
+                      {formErrors.details}
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex flex-col gap-3 mt-2">
+                {/* Submit & Status Messages */}
+                <div className="flex flex-col gap-4 mt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full group py-4 px-6 bg-[#FF5A1F] hover:bg-[#E54C12] text-white rounded-full font-sans font-bold tracking-widest text-xs uppercase flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_rgba(255,90,31,0.25)] transition-all duration-500 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 cursor-pointer"
+                    className="w-full relative py-4 px-6 rounded-full font-sans font-bold tracking-widest text-xs uppercase overflow-hidden text-white bg-gradient-to-r from-[#FF5A1F] to-[#FF8C39] hover:shadow-[0_12px_30px_rgba(255,90,31,0.3)] transition-all duration-500 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none cursor-pointer flex items-center justify-center gap-2 group"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Inquiry'}
-                    <Send className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
+                    {isSubmitting ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Inquiry</span>
+                        <Send className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                      </>
+                    )}
                   </button>
 
+                  {/* UI-only Success Message Placeholder */}
                   {submitStatus === 'success' && (
-                    <span className="text-xs font-sans text-green-600 text-center font-medium mt-1">
+                    <div className="p-3.5 rounded-xl bg-green-500/10 border border-green-500/30 text-green-700 text-xs font-sans font-medium text-center flex items-center justify-center gap-2 animate-fadeIn">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
                       Thank you! Your inquiry has been sent successfully.
-                    </span>
+                    </div>
                   )}
+
+                  {/* Error Message */}
                   {submitStatus === 'error' && (
-                    <span className="text-xs font-sans text-[#FF5A1F] text-center font-medium mt-1">
-                      {errorMessage || 'Failed to send. Please try again or email us directly at creovizgraphic30@gmail.com.'}
-                    </span>
+                    <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 text-xs font-sans font-medium text-center flex items-center justify-center gap-2 animate-fadeIn">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                      {errorMessage || 'Please fix the errors above before sending.'}
+                    </div>
                   )}
 
                   {/* Privacy note */}
                   <span className="text-[10px] text-[#888888] font-sans font-light text-center">
-                    Your information will remain completely confidential.
+                    Your information is secure and remains completely confidential.
                   </span>
                 </div>
               </form>

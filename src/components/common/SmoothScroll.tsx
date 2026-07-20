@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 import Lenis from 'lenis';
 
 interface SmoothScrollProps {
@@ -9,18 +9,73 @@ interface SmoothScrollProps {
 export const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
   const lenisRef = useRef<Lenis | null>(null);
   const location = useLocation();
+  const navType = useNavigationType();
+  const scrollPositions = useRef<Record<string, number>>({});
 
-  // Reset scroll and disable browser restoration on navigation
+  // Initialize scroll positions from sessionStorage
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem('creoviz_scroll_positions');
+      if (stored) {
+        scrollPositions.current = JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error('Failed to load scroll positions from sessionStorage', e);
+    }
+  }, []);
+
+  // Save scroll position when user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
+      if (location.key) {
+        scrollPositions.current[location.key] = window.scrollY;
+        try {
+          sessionStorage.setItem('creoviz_scroll_positions', JSON.stringify(scrollPositions.current));
+        } catch (e) {
+          // ignore storage quota errors
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [location.key]);
+
+  // Reset scroll or restore position on navigation
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
 
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
+    const savedPos = scrollPositions.current[location.key] || 0;
+
+    if (navType === 'POP') {
+      const restoreScroll = () => {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(savedPos, { immediate: true });
+        } else {
+          window.scrollTo(0, savedPos);
+        }
+      };
+
+      restoreScroll();
+      
+      const rafId = requestAnimationFrame(restoreScroll);
+      const timeoutId = setTimeout(restoreScroll, 50);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearTimeout(timeoutId);
+      };
+    } else {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo(0, 0);
     }
-    window.scrollTo(0, 0);
-  }, [location]);
+  }, [location, navType]);
 
   useEffect(() => {
     // Initialize Lenis smooth scroll with luxurious, smooth parameters

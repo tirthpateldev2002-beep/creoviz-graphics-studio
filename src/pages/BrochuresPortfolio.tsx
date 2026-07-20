@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { WorkCTA } from '../components/sections/WorkCTA';
 
 export const BrochuresPortfolio: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">

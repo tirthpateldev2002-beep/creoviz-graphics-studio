@@ -68,7 +68,6 @@ export const WorkCategory: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
     setLightboxList(null);
     setLightboxIndex(-1);
     setSelectedImage(null);

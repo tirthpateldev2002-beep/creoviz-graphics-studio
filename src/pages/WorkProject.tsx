@@ -23,7 +23,6 @@ export const WorkProject: React.FC = () => {
   const [isLocalProject, setIsLocalProject] = useState<boolean>(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
     setLightboxIndex(-1);
     setIsLocalProject(projectId === 'deeps-beauty' || projectId === 'deeps-skin-clinic');
   }, [projectId]);
