@@ -59,17 +59,17 @@ export const FeaturedWork: React.FC = () => {
                 {/* Aspect Ratio Box with zoom and lift */}
                 <div className="relative aspect-[16/10] rounded-premium-lg overflow-hidden border border-glass-border shadow-premium-sm bg-bg-gray transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2 group-hover:shadow-premium-lg">
                   {/* Colored background fill representation */}
-                  <div 
+                  <div
                     className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                     style={{ background: project.gradient }}
                   />
-                  
+
                   {/* Subtle dark pattern gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-60" />
-                  
+
                   {/* Abstract brand pattern overlay to look like high-end packaging design */}
                   <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
-                  
+
                   {/* Floating details inside thumbnail */}
                   <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end text-bg-light">
                     <div className="flex flex-col gap-1">
