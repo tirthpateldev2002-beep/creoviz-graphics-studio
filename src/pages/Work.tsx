@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 // ----------------------------------------------------
 // Section 1 Hero — Re-using the exact original interactive illustration
@@ -139,6 +140,11 @@ export const Work: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">
+      <SEO
+        title="Our Portfolio & Client Case Studies | Creoviz Graphics Studio"
+        description="Browse our premium portfolio showcasing custom branding packages, professional packaging boxes, responsive websites, and elegant digital interfaces."
+        path="/work"
+      />
       {/* =================================================
           SECTION 1: Hero Section (Dark Theme) - KEEP UNCHANGED
           ================================================= */}

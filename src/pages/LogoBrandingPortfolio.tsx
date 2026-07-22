@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Palette } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 interface BrandCardData {
   id: string;
@@ -18,63 +19,63 @@ export const LogoBrandingPortfolio: React.FC = () => {
     {
       id: 'kala-kruti',
       name: 'Kala Kruti',
-      coverImage: '/brand-images/Kala Kruti Mockup 1.jpg',
+      coverImage: '/brand-images/Kala Kruti Mockup 1.webp',
       pdfUrl: '/Kala Kruti Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'jwellery-hub',
       name: 'Jwellery Hub',
-      coverImage: '/brand-images/Jwellery Hub Mockup 1.jpg',
+      coverImage: '/brand-images/Jwellery Hub Mockup 1.webp',
       pdfUrl: '/Jwellery Hub Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'lubrify',
       name: 'Lubrify',
-      coverImage: '/brand-images/Lubrify Mockup 1.jpg',
+      coverImage: '/brand-images/Lubrify Mockup 1.webp',
       pdfUrl: '/Lubrify Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'ram-solution',
       name: 'Ram Solution',
-      coverImage: '/brand-images/Ram Solution Mockup 1.jpg',
+      coverImage: '/brand-images/Ram Solution Mockup 1.webp',
       pdfUrl: '/Ram Solution Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'shree-jwellers',
       name: 'Shree Jwellers',
-      coverImage: '/brand-images/Shree Jwellers Mockup 1.png',
+      coverImage: '/brand-images/Shree Jwellers Mockup 1.webp',
       pdfUrl: '/Shree Jwellers Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'codexi',
       name: 'Codexi',
-      coverImage: '/brand-images/Codexi Mockup 1.jpg',
+      coverImage: '/brand-images/Codexi Mockup 1.webp',
       pdfUrl: '/Codexi Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'hiyas-snacks-corner',
       name: "Hiya's Snacks Corner",
-      coverImage: "/brand-images/Hiya's Snacks Corner Mockup 1.jpg",
+      coverImage: "/brand-images/Hiya's Snacks Corner Mockup 1.webp",
       pdfUrl: "/Hiya's Snacks Corner Case Study.pdf",
       isPlaceholder: false
     },
     {
       id: 'arpan-tyre',
       name: 'Arpan Tyre',
-      coverImage: '/brand-images/Arpan Tyre Corner Mockup 1.jpg',
+      coverImage: '/brand-images/Arpan Tyre Corner Mockup 1.webp',
       pdfUrl: '/Arpan Tyre Case Study.pdf',
       isPlaceholder: false
     },
     {
       id: 'umiya-industries',
       name: 'Umiya Industries',
-      coverImage: '/brand-images/Umiya Industries Corner Mockup 1.jpg',
+      coverImage: '/brand-images/Umiya Industries Corner Mockup 1.webp',
       pdfUrl: '/Umiya Industries Case Study.pdf',
       isPlaceholder: false
     },
@@ -82,6 +83,11 @@ export const LogoBrandingPortfolio: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">
+      <SEO
+        title="Logo Design & Branding Portfolio | Creoviz Graphics Studio"
+        description="Explore our collection of custom brand identity packages, logo designs, and typography configurations crafted for premium offline and digital experiences."
+        path="/work/logo-branding"
+      />
       {/* =================================================
           1. HERO SECTION (Dark Theme)
           ================================================= */}
@@ -170,6 +176,7 @@ export const LogoBrandingPortfolio: React.FC = () => {
                           src={card.coverImage}
                           alt={card.name}
                           className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                          loading="lazy"
                         />
                       </div>
                       {/* Meta */}

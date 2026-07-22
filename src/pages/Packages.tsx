@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/common/SEO';
 import {
   ArrowRight,
   Palette,
@@ -342,6 +343,11 @@ export const Packages: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white">
+      <SEO
+        title="Premium Brand Design & Identity Packages | Creoviz"
+        description="Find the perfect branding, packaging, or digital design package for your business. View transparent pricing and inclusions for all our services."
+        path="/packages"
+      />
       {/* =================================================
           SECTION 1: HERO (Dark Theme)
           ================================================= */}

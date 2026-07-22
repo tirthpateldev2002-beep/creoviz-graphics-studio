@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../assets/Creoviz_Blue.png';
+import logo from '../../assets/Creoviz_Blue.webp';
 import { Magnetic } from '../ui/Magnetic';
 
 export const Navbar: React.FC = () => {

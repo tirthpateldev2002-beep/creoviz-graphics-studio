@@ -68,14 +68,14 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Pharma & Healthcare',
     services: ['Brand Identity', 'Logo Design', 'Visual Guidelines', 'Product Packaging'],
     description: 'Sunelite Pharma is a pharmaceutical export company focused on delivering high-quality healthcare solutions across global markets.',
-    logoUrl: '/brand-images/Sunelite Logo.png',
-    heroImageUrl: '/brand-images/Sunelite Mockup 1.png',
+    logoUrl: '/brand-images/Sunelite Logo.webp',
+    heroImageUrl: '/brand-images/Sunelite Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Sunelite Mockup 2.png',
-      '/brand-images/Sunelite Mockup 3.png',
-      '/brand-images/Sunelite Mockup 4.png',
-      '/brand-images/Sunelite Mockup 5.png',
-      '/brand-images/Sunelite Mockup 6.png'
+      '/brand-images/Sunelite Mockup 2.webp',
+      '/brand-images/Sunelite Mockup 3.webp',
+      '/brand-images/Sunelite Mockup 4.webp',
+      '/brand-images/Sunelite Mockup 5.webp',
+      '/brand-images/Sunelite Mockup 6.webp'
     ],
     colors: [
       { name: 'Deep Blue', hex: '#0C3D77' },
@@ -95,12 +95,12 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Industrial Packaging',
     services: ['Brand Identity', 'Industrial Logo', 'Packaging Systems', 'Corporate Print'],
     description: "It's a corrugated box manufacturing company.",
-    logoUrl: '/brand-images/Maa Shakti Packaging Logo.png',
-    heroImageUrl: '/brand-images/Maa Shakti Packaging Mockup 1.png',
+    logoUrl: '/brand-images/Maa Shakti Packaging Logo.webp',
+    heroImageUrl: '/brand-images/Maa Shakti Packaging Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Maa Shakti Packaging Mockup 2.png',
-      '/brand-images/Maa Shakti Packaging Mockup 3.png',
-      '/brand-images/Maa Shakti Packaging Mockup 4.png'
+      '/brand-images/Maa Shakti Packaging Mockup 2.webp',
+      '/brand-images/Maa Shakti Packaging Mockup 3.webp',
+      '/brand-images/Maa Shakti Packaging Mockup 4.webp'
     ],
     colors: [
       { name: 'Packaging Blue', hex: '#18509D' },
@@ -119,10 +119,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Automotive & Lubricants',
     services: ['Brand Mark', 'Logo Design', 'Label Guidelines', 'Canister Graphics'],
     description: "It's an oil recycle company.",
-    logoUrl: '/brand-images/Lubrify Logo.png',
-    heroImageUrl: '/brand-images/Lubrify Mockup 1.png',
+    logoUrl: '/brand-images/Lubrify Logo.webp',
+    heroImageUrl: '/brand-images/Lubrify Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Lubrify Mockup 2.png'
+      '/brand-images/Lubrify Mockup 2.webp'
     ],
     colors: [
       { name: 'Deep Navy', hex: '#022854' },
@@ -141,10 +141,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Luxury Jewelry',
     services: ['Luxury Identity', 'Monogram Design', 'Premium Box Print', 'Tag Design'],
     description: "It's Jewellery Showroom.",
-    logoUrl: '/brand-images/Shree Jwellers Logo.png',
-    heroImageUrl: '/brand-images/Shree Jwellers Mockup 1.png',
+    logoUrl: '/brand-images/Shree Jwellers Logo.webp',
+    heroImageUrl: '/brand-images/Shree Jwellers Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Shree Jwellers Mockup 2.png'
+      '/brand-images/Shree Jwellers Mockup 2.webp'
     ],
     colors: [
       { name: 'Warm Gold', hex: '#E8C379' },
@@ -163,13 +163,13 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Jewelry Retail',
     services: ['E-Commerce Branding', 'Logo Lockup', 'Packaging Mockups', 'Gift Bag Design'],
     description: "It's Ornaments Business.",
-    logoUrl: '/brand-images/Jwellery Hub Logo.png',
-    heroImageUrl: '/brand-images/Jwellery Hub Mockup 1.png',
+    logoUrl: '/brand-images/Jwellery Hub Logo.webp',
+    heroImageUrl: '/brand-images/Jwellery Hub Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Jwellery Hub Mockup 2.png',
-      '/brand-images/Jwellery Hub Mockup 3.png',
-      '/brand-images/Jwellery Hub Mockup 4.png',
-      '/brand-images/Jwellery Hub Mockup 5.png'
+      '/brand-images/Jwellery Hub Mockup 2.webp',
+      '/brand-images/Jwellery Hub Mockup 3.webp',
+      '/brand-images/Jwellery Hub Mockup 4.webp',
+      '/brand-images/Jwellery Hub Mockup 5.webp'
     ],
     colors: [
       { name: 'Classic Gold', hex: '#DDBA76' },
@@ -188,13 +188,13 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'IT & Technology Solutions',
     services: ['IT Branding', 'Technology Logo', 'Stationery Specs', 'Corporate Brand Deck'],
     description: 'Ram Solution is a reliable CSC (Common Service Center) service provider offering a wide range of digital and government-related services.',
-    logoUrl: '/brand-images/Ram Solution Logo.png',
-    heroImageUrl: '/brand-images/Ram Solution Mockup 1.png',
+    logoUrl: '/brand-images/Ram Solution Logo.webp',
+    heroImageUrl: '/brand-images/Ram Solution Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Ram Solution Mockup 2.png',
-      '/brand-images/Ram Solution Mockup 3.png',
-      '/brand-images/Ram Solution Mockup 4.png',
-      '/brand-images/Ram Solution Mockup 5.png'
+      '/brand-images/Ram Solution Mockup 2.webp',
+      '/brand-images/Ram Solution Mockup 3.webp',
+      '/brand-images/Ram Solution Mockup 4.webp',
+      '/brand-images/Ram Solution Mockup 5.webp'
     ],
     colors: [
       { name: 'Forest Green', hex: '#179046' },
@@ -213,10 +213,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Software & SaaS',
     services: ['SaaS Logo Design', 'Monogram', 'Sticker Packs', 'UI Style Guide'],
     description: "It's Future IT Company.",
-    logoUrl: '/brand-images/Codexi Logo.png',
-    heroImageUrl: '/brand-images/Codexi Mockup 1.png',
+    logoUrl: '/brand-images/Codexi Logo.webp',
+    heroImageUrl: '/brand-images/Codexi Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Codexi Mockup 2.png'
+      '/brand-images/Codexi Mockup 2.webp'
     ],
     colors: [
       { name: 'Metallic Gold', hex: '#D4AF36' },
@@ -235,11 +235,11 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Food & Beverages',
     services: ['QSR Branding', 'Logo Design', 'Carry Bag Design', 'Menu Graphics'],
     description: "Hiya's Snacks Corner is a dry snacks business.",
-    logoUrl: "/brand-images/Heeya's Snacks Corner Logo.png",
-    heroImageUrl: "/brand-images/Hiya's Snacks Corner Mockup 1.png",
+    logoUrl: "/brand-images/Heeya's Snacks Corner Logo.webp",
+    heroImageUrl: "/brand-images/Hiya's Snacks Corner Mockup 1.webp",
     mockupUrls: [
-      "/brand-images/Hiya's Snacks Corner Mockup 2.png",
-      "/brand-images/Hiya's Snacks Corner Mockup 3.png"
+      "/brand-images/Hiya's Snacks Corner Mockup 2.webp",
+      "/brand-images/Hiya's Snacks Corner Mockup 3.webp"
     ],
     colors: [
       { name: 'Saffron Yellow', hex: '#F3A027' },
@@ -259,10 +259,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Automotive & Tyres',
     services: ['Retail Branding', 'Logo Design', 'Store Front Design', 'Visiting Cards'],
     description: "It's a tyre alignment shop.",
-    logoUrl: '/brand-images/Arpan tyre Logo.png',
-    heroImageUrl: '/brand-images/Arpan tyre hub Mockup 1.png',
+    logoUrl: '/brand-images/Arpan tyre Logo.webp',
+    heroImageUrl: '/brand-images/Arpan tyre hub Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Arpan tyre hub Mockup 2.png'
+      '/brand-images/Arpan tyre hub Mockup 2.webp'
     ],
     colors: [
       { name: 'Tread Black', hex: '#020202' },
@@ -281,10 +281,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Wooden Palette Manufacturing',
     services: ['Corporate Branding', 'Industrial Logo', 'Safety Boards', 'Corporate Stationery'],
     description: "It's Wooden Palette Manufacturing Company.",
-    logoUrl: '/brand-images/Umiya Industries Logo.png',
-    heroImageUrl: '/brand-images/Umiya Industries Mockup 1.png',
+    logoUrl: '/brand-images/Umiya Industries Logo.webp',
+    heroImageUrl: '/brand-images/Umiya Industries Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Umiya Industries Mockup 2.png'
+      '/brand-images/Umiya Industries Mockup 2.webp'
     ],
     colors: [
       { name: 'Wood Brown', hex: '#793D21' },
@@ -303,11 +303,11 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Crochet & Handwork',
     services: ['Brand Identity', 'Logo Design', 'Label Guidelines', 'Product Packaging'],
     description: "It's a Crochet and Handwork Small Business.",
-    logoUrl: '/brand-images/Kala Kruti Logo.png',
-    heroImageUrl: '/brand-images/Kala Kruti Mockup 1.png',
+    logoUrl: '/brand-images/Kala Kruti Logo.webp',
+    heroImageUrl: '/brand-images/Kala Kruti Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Kala Kruti Mockup 2.png',
-      '/brand-images/Kala Kruti Mockup 3.png'
+      '/brand-images/Kala Kruti Mockup 2.webp',
+      '/brand-images/Kala Kruti Mockup 3.webp'
     ],
     colors: [
       { name: 'Crochet Red', hex: '#730400' },
@@ -326,10 +326,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Hardware Retail',
     services: ['Retail Identity', 'Logo Design', 'Store Banner', 'Corporate Stationery'],
     description: "It's a Hardware Shop.",
-    logoUrl: '/brand-images/Mahadev Decor Logo.png',
-    heroImageUrl: '/brand-images/Mahadev Decor Mockup 1.png',
+    logoUrl: '/brand-images/Mahadev Decor Logo.webp',
+    heroImageUrl: '/brand-images/Mahadev Decor Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Mahadev Decor Mockup 2.png'
+      '/brand-images/Mahadev Decor Mockup 2.webp'
     ],
     colors: [
       { name: 'Copper Orange', hex: '#CC6931' },
@@ -348,10 +348,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Travel & Tourism',
     services: ['Travel Branding', 'Logo Design', 'Promo Guidelines', 'Stationery Specs'],
     description: "It's a Travel Agency.",
-    logoUrl: '/brand-images/Hetvi Travels Logo.png',
-    heroImageUrl: '/brand-images/Hetvi Travels Mockup 1.png',
+    logoUrl: '/brand-images/Hetvi Travels Logo.webp',
+    heroImageUrl: '/brand-images/Hetvi Travels Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Hetvi Travels Mockup 2.png'
+      '/brand-images/Hetvi Travels Mockup 2.webp'
     ],
     colors: [
       { name: 'Travel Gold', hex: '#E5AB36' },
@@ -370,10 +370,10 @@ export const PORTFOLIO_PROJECTS: Record<string, ProjectData> = {
     industry: 'Heavy Engineering',
     services: ['Industrial Identity', 'Logo Design', 'Corporate Print', 'Equipment Mockups'],
     description: "It's an Engineering Equipment Company.",
-    logoUrl: '/brand-images/Apex Engineering Logo.png',
-    heroImageUrl: '/brand-images/Apex Engineering Mockup 1.png',
+    logoUrl: '/brand-images/Apex Engineering Logo.webp',
+    heroImageUrl: '/brand-images/Apex Engineering Mockup 1.webp',
     mockupUrls: [
-      '/brand-images/Apex Engineering Mockup 2.png'
+      '/brand-images/Apex Engineering Mockup 2.webp'
     ],
     colors: [
       { name: 'Safety Orange', hex: '#F28C22' },
@@ -394,31 +394,31 @@ export const BUSINESS_ESSENTIALS_GALLERY: GalleryItem[] = [
     id: 'be-card-1',
     title: 'Maa Shakti Packaging Letterpad',
     type: 'Letterpad',
-    image: '/brand-images/Maa Shakti Packaging Letterpad.jpg',
+    image: '/brand-images/Maa Shakti Packaging Letterpad.webp',
   },
   {
     id: 'be-card-2',
     title: 'Sunelite Pharma Letterpad',
     type: 'Letterpad',
-    image: '/brand-images/Sunelite Pharma Letterpad.png',
+    image: '/brand-images/Sunelite Pharma Letterpad.webp',
   },
   {
     id: 'be-card-3',
     title: 'Maa Shakti Envelope',
     type: 'Envelope',
-    image: '/brand-images/Maa Shakti Envelope.jpg',
+    image: '/brand-images/Maa Shakti Envelope.webp',
   },
   {
     id: 'be-card-4',
     title: 'Mahalaxmi Saw Mill Label Design',
     type: 'Label Design',
-    image: '/brand-images/Mahalaxmi Saw Mill Label Design.jpg',
+    image: '/brand-images/Mahalaxmi Saw Mill Label Design.webp',
   },
   {
     id: 'be-card-5',
     title: 'Arpan Tyre Bill Book',
     type: 'Bill Book',
-    image: '/brand-images/Arpan Tyre Bill Book.jpg',
+    image: '/brand-images/Arpan Tyre Bill Book.webp',
   },
 ];
 

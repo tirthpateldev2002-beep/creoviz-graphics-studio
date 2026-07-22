@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { useLocation, useNavigationType } from 'react-router-dom';
+import { SEO } from '../components/common/SEO';
 
 
 import {
@@ -424,6 +425,11 @@ export const Contact: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white">
+      <SEO
+        title="Get a Custom Design Quote & Consultation | Creoviz"
+        description="Ready to elevate your brand? Contact Creoviz Graphics Studio today to request a free quote, consult on your design needs, or chat on WhatsApp."
+        path="/contact"
+      />
       {/* =================================================
           SECTION 1: HERO (Dark Theme)
           ================================================= */}

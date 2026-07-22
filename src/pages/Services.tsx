@@ -1,19 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/common/SEO';
 
-import logoBrandImg from '../assets/logo-brand-identity.jpg';
-import graphicDesignImg from '../assets/graphic-design.png';
-import printPackagingImg from '../assets/print-packaging.jpg';
-import linkedinBrandingImg from '../assets/linkedin-branding.png';
-import businessEssentialsImg from '../assets/business-essentials.jpg';
-import socialMediaImg from '../assets/social-media-design.jpg';
-import googleBusinessImg from '../assets/google-business-profile.jpg';
-import googleAdsImg from '../assets/google-ads.png';
-import metaAdsImg from '../assets/meta-ads.png';
-import websiteDesignImg from '../assets/website-design.png';
-import uiDesignImg from '../assets/ui-design.png';
-import videoEditingImg from '../assets/video-editing.jpg';
+import logoBrandImg from '../assets/logo-brand-identity.webp';
+import graphicDesignImg from '../assets/graphic-design.webp';
+import printPackagingImg from '../assets/print-packaging.webp';
+import linkedinBrandingImg from '../assets/linkedin-branding.webp';
+import businessEssentialsImg from '../assets/business-essentials.webp';
+import socialMediaImg from '../assets/social-media-design.webp';
+import googleBusinessImg from '../assets/google-business-profile.webp';
+import googleAdsImg from '../assets/google-ads.webp';
+import metaAdsImg from '../assets/meta-ads.webp';
+import websiteDesignImg from '../assets/website-design.webp';
+import uiDesignImg from '../assets/ui-design.webp';
+import videoEditingImg from '../assets/video-editing.webp';
 import {
   Palette,
   ArrowRight,
@@ -417,6 +418,11 @@ export const Services: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white">
+      <SEO
+        title="Professional Graphic Design & Growth Services | Creoviz"
+        description="Explore our premium design and marketing services, including logo & brand identity, print & packaging solutions, social media design, website design, and UI design."
+        path="/services"
+      />
       {/* =================================================
           SECTION 1: HERO (Dark Theme)
           ================================================= */}

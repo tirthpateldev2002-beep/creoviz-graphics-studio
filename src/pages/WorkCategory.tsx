@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, FolderOpen, Play, X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { SEO } from '../components/common/SEO';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { WorkCTA } from '../components/sections/WorkCTA';
@@ -381,6 +382,11 @@ export const WorkCategory: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white">
+      <SEO
+        title={`${category.title} Portfolio | Creoviz Graphics Studio`}
+        description={category.description || `Explore our premium client works in the ${category.title} category.`}
+        path={`/work/${categoryId}`}
+      />
       {/* =================================================
           MINI HERO SECTION (Dark Theme)
           ================================================= */}

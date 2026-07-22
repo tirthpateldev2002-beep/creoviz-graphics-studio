@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowUp, Phone, Mail, MapPin } from 'lucide-react';
-import logoWhite from '../../assets/Creoviz_White.png';
+import logoWhite from '../../assets/Creoviz_White.webp';
 
 export const Footer: React.FC = () => {
   const location = useLocation();

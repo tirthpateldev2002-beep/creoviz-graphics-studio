@@ -12,7 +12,8 @@ import {
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { CTA } from '../components/sections/CTA';
-import creovizIcon from '../assets/creoviz_icon.png';
+import creovizIcon from '../assets/creoviz_icon.webp';
+import { SEO } from '../components/common/SEO';
 
 // ----------------------------------------------------
 // Helper Component: Animated Counter for Stats
@@ -304,6 +305,11 @@ export const About: React.FC = () => {
 
   return (
     <div className="relative bg-bg-light overflow-x-hidden">
+      <SEO
+        title="About Our Creative Agency | Creoviz Graphics Studio"
+        description="Learn about the mission, values, and creative process behind Creoviz Graphics Studio. We are a dedicated team focused on design excellence."
+        path="/about"
+      />
       {/* =================================================
           SECTION 1: ABOUT CREOVIZ HERO
           ================================================= */}

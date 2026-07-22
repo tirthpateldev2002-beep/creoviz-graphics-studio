@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { SEO } from '../components/common/SEO';
 
-import logoBrandImg from '../assets/logo-brand-identity.jpg';
-import graphicDesignImg from '../assets/graphic-design.png';
-import printPackagingImg from '../assets/print-packaging.jpg';
-import linkedinBrandingImg from '../assets/linkedin-branding.png';
-import businessEssentialsImg from '../assets/business-essentials.jpg';
-import googleBusinessImg from '../assets/google-business-profile.jpg';
-import googleAdsImg from '../assets/google-ads.png';
-import metaAdsImg from '../assets/meta-ads.png';
-import socialMediaImg from '../assets/social-media-design.jpg';
-import websiteDesignImg from '../assets/website-design.png';
-import uiDesignImg from '../assets/ui-design.png';
-import videoEditingImg from '../assets/video-editing.jpg';
+import logoBrandImg from '../assets/logo-brand-identity.webp';
+import graphicDesignImg from '../assets/graphic-design.webp';
+import printPackagingImg from '../assets/print-packaging.webp';
+import linkedinBrandingImg from '../assets/linkedin-branding.webp';
+import businessEssentialsImg from '../assets/business-essentials.webp';
+import googleBusinessImg from '../assets/google-business-profile.webp';
+import googleAdsImg from '../assets/google-ads.webp';
+import metaAdsImg from '../assets/meta-ads.webp';
+import socialMediaImg from '../assets/social-media-design.webp';
+import websiteDesignImg from '../assets/website-design.webp';
+import uiDesignImg from '../assets/ui-design.webp';
+import videoEditingImg from '../assets/video-editing.webp';
 import {
   ArrowLeft,
   ArrowRight,
@@ -720,6 +721,19 @@ export const ServiceDetail: React.FC = () => {
   // Load content
   const content = serviceId ? SERVICES_DATA[serviceId] : null;
 
+  const serviceSchema = content ? {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": content.title,
+    "provider": {
+      "@type": "Organization",
+      "name": "Creoviz Graphics Studio",
+      "url": "https://creoviz-graphics-studio.vercel.app"
+    },
+    "description": content.heroDesc || content.overviewText || "Explore our professional design services.",
+    "category": content.category
+  } : null;
+
   // Handle fallback if route parameter is unrecognized
   if (!content) {
     return (
@@ -743,6 +757,13 @@ export const ServiceDetail: React.FC = () => {
   if (content.isComingSoon) {
     return (
       <div className="relative overflow-x-hidden bg-white">
+        <SEO
+          title={`${content.title} Service | Creoviz Graphics Studio`}
+          description={content.heroDesc || `Learn more about our premium ${content.title} services at Creoviz Graphics Studio.`}
+          path={`/services/${serviceId}`}
+          image={content.image}
+          schema={serviceSchema || undefined}
+        />
         {/* Noise Overlay */}
         <div className="noise-overlay opacity-[0.02]" />
 
@@ -890,6 +911,13 @@ export const ServiceDetail: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white">
+      <SEO
+        title={`${content.title} Service | Creoviz Graphics Studio`}
+        description={content.heroDesc || content.overviewText || `Learn more about our premium ${content.title} services at Creoviz Graphics Studio.`}
+        path={`/services/${serviceId}`}
+        image={content.image}
+        schema={serviceSchema || undefined}
+      />
       {/* Noise Overlay */}
       <div className="noise-overlay opacity-[0.02]" />
 

@@ -6,6 +6,7 @@ import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { PORTFOLIO_PROJECTS } from '../utils/portfolioData';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 interface ShowcaseItem {
   label: string;
@@ -34,28 +35,28 @@ export const WorkProject: React.FC = () => {
       title: 'Custom Lip-Shaped Business Card',
       align: 'left',
       description: 'We designed custom lip-shaped business cards featuring premium print structures and soft-touch matte laminations to reflect a modern, high-fashion aesthetic for the brand.',
-      imageUrl: '/brand-images/Deeps Beauty Mockup design.png'
+      imageUrl: '/brand-images/Deeps Beauty Mockup design.webp'
     },
     {
       label: '02 / PRINT BRANDING',
       title: 'Premium Business Card',
       align: 'right',
       description: 'Crafted dual-toned premium business cards on heavy cardstock. The design utilizes a minimal, high-contrast typography layout highlighting core details alongside a clean blind-debossed logo finish.',
-      imageUrl: '/brand-images/Deeps Beauty Business Card.jpg'
+      imageUrl: '/brand-images/Deeps Beauty Business Card.webp'
     },
     {
       label: '03 / RETAIL BRANDING',
       title: 'Product Price Tag Design',
       align: 'left',
       description: 'Elegant product price tags featuring clean grids, custom typography configurations, and metallic foil accents to unify the physical product presentation for retail shelf layouts.',
-      imageUrl: '/brand-images/Deeps Beauty Price Tag.jpg'
+      imageUrl: '/brand-images/Deeps Beauty Price Tag.webp'
     },
     {
       label: '04 / PACKAGING',
       title: 'Custom Paper Bag Design',
       align: 'right',
       description: 'Bespoke corporate paper bag layout designs with structural rope handles and unified brand motifs, optimized for production and premium unboxing customer experiences.',
-      imageUrl: '/brand-images/Deeps Beauty Paper Bag.png'
+      imageUrl: '/brand-images/Deeps Beauty Paper Bag.webp'
     }
   ];
 
@@ -65,28 +66,28 @@ export const WorkProject: React.FC = () => {
       title: 'Logo Design',
       align: 'left',
       description: "Designed a clean, clinical logo identity system for Deep's Skin Clinic. The round signage concept utilizes elegant typography and a minimalist face icon, creating a high-end medical-aesthetic brand presence.",
-      imageUrl: "/brand-images/Deep's Skin Clinic Logo.jpg"
+      imageUrl: "/brand-images/Deep's Skin Clinic Logo.webp"
     },
     {
       label: '02 / PRINT BRANDING',
       title: 'Custom Lip-Shaped Business Card',
       align: 'right',
       description: "Created custom lip-shaped business cards featuring premium rose-toned colors, minimal typography layout, and detailed contact info. The unique contour cut mirrors the clinic's core treatments, offering a memorable tactile experience.",
-      imageUrl: '/brand-images/Deeps Skin Clinic Card Mockup.jpg'
+      imageUrl: '/brand-images/Deeps Skin Clinic Card Mockup.webp'
     },
     {
       label: '03 / PRINT MARKETING',
       title: 'Coupon Design & Printing',
       align: 'left',
       description: 'Production-ready discount coupons and referral tickets optimized for offset print colors to drive clinic client retention and strengthen offline promotional activities.',
-      imageUrl: "/brand-images/Deep's Skin Clinic Coupon Mockup.png"
+      imageUrl: "/brand-images/Deep's Skin Clinic Coupon Mockup.webp"
     },
     {
       label: '04 / PACKAGING',
       title: 'Custom Paper Bag Design',
       align: 'right',
       description: 'Premium clinical shopping bags designed with minimalist alignments, soft paper weights, and durable fold alignments suitable for premium skin care products delivery.',
-      imageUrl: "/brand-images/Deep's Skin Clinic Paper Bag.png"
+      imageUrl: "/brand-images/Deep's Skin Clinic Paper Bag.webp"
     }
   ];
 
@@ -150,6 +151,13 @@ export const WorkProject: React.FC = () => {
 
     return (
       <div className="relative overflow-x-hidden bg-white text-left">
+        <SEO
+          title={`${pageTitle} - Brand Case Study | Creoviz Graphics Studio`}
+          description={overviewText}
+          path={`/work/project/${projectId}`}
+          image={isBeauty ? '/brand-images/Deeps%20Beauty%20Mockup%20design.webp' : '/brand-images/Deeps%20Skin%20Clinic%20Card%20Mockup.webp'}
+          preloadImage={isBeauty ? '/brand-images/Deeps%20Beauty%20Mockup%20design.webp' : '/brand-images/Deeps%20Skin%20Clinic%20Card%20Mockup.webp'}
+        />
         {/* =================================================
             1. HERO SECTION (Dark Theme)
             ================================================= */}
@@ -234,6 +242,7 @@ export const WorkProject: React.FC = () => {
                           src={showcase.imageUrl}
                           alt={showcase.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
+                          loading="lazy"
                         />
                       ) : (
                         <>
@@ -383,6 +392,13 @@ export const WorkProject: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-[#F7F7F8] text-left">
+      <SEO
+        title={`${project.name} - Brand Case Study | Creoviz`}
+        description={`Case study for ${project.name}: ${project.description}`}
+        path={`/work/project/${projectId}`}
+        image={project.heroImageUrl}
+        preloadImage={project.heroImageUrl}
+      />
       {/* =================================================
           1. HERO MOCKUP (Dark Theme) - UNCHANGED LAYOUT
           ================================================= */}
@@ -438,6 +454,8 @@ export const WorkProject: React.FC = () => {
                     src={project.heroImageUrl}
                     alt={`${project.name} Hero`}
                     className="w-full h-full object-cover rounded-xl"
+                    loading="eager"
+                    fetchPriority="high"
                   />
                 ) : (
                   project.mockupSvg
@@ -591,6 +609,7 @@ export const WorkProject: React.FC = () => {
                         src={mockupUrl}
                         alt={`${project.name} Mockup ${idx + 1}`}
                         className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                   </div>

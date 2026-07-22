@@ -2,11 +2,17 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 export const BrochuresPortfolio: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">
+      <SEO
+        title="Brochures Portfolio | Creoviz Graphics Studio"
+        description="Explore our collection of premium corporate brochures, product catalogs, and corporate sales booklets designed to present details clearly."
+        path="/work/brochures"
+      />
       {/* =================================================
           1. HERO SECTION (Dark Theme)
           ================================================= */}
@@ -44,9 +50,10 @@ export const BrochuresPortfolio: React.FC = () => {
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
                   <img
-                    src="/brand-images/Brochure_Mockup_4.jpg"
+                    src="/brand-images/Brochure_Mockup_4.webp"
                     alt="Sunelite Pharma Brochure"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">
@@ -70,9 +77,10 @@ export const BrochuresPortfolio: React.FC = () => {
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
                   <img
-                    src="/brand-images/Folded_A5_Flyer_Mockup_1.jpg"
+                    src="/brand-images/Folded_A5_Flyer_Mockup_1.webp"
                     alt="Maa Shakti Packaging Brochure"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">

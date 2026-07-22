@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ZoomIn, ZoomOut, X, FolderOpen } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 interface BusinessCardData {
   id: string;
@@ -53,55 +54,60 @@ export const BusinessCardsPortfolio: React.FC = () => {
     {
       id: 'card-01',
       name: 'The Layers Business Card',
-      image: '/brand-images/The Layers Business Card.jpg',
+      image: '/brand-images/The Layers Business Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-02',
       name: 'Sunelite Pharma Business Card 4',
-      image: '/brand-images/Sunelite Pharma Business Card 4.jpg',
+      image: '/brand-images/Sunelite Pharma Business Card 4.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-03',
       name: 'Divya Ply Business Card',
-      image: '/brand-images/Divya Ply Business Card.jpg',
+      image: '/brand-images/Divya Ply Business Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-04',
       name: 'Poonam Traders Visiting Card',
-      image: '/brand-images/Poonam Traders Visiting Card.jpg',
+      image: '/brand-images/Poonam Traders Visiting Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-05',
       name: 'Maa Shakti Packaging Business Card',
-      image: '/brand-images/Maa Shakti Packaging Business Card.jpg',
+      image: '/brand-images/Maa Shakti Packaging Business Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-06',
       name: 'Arpan Tyre Visiting Card',
-      image: '/brand-images/Arpan Tyre Visiting Card.jpg',
+      image: '/brand-images/Arpan Tyre Visiting Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-07',
       name: 'Divyog CNC Studio Visiting Card',
-      image: '/brand-images/Divyog CNC Studio Visiting Card.jpg',
+      image: '/brand-images/Divyog CNC Studio Visiting Card.webp',
       isPlaceholder: false,
     },
     {
       id: 'card-08',
       name: 'Patel & Company Visiting Card',
-      image: '/brand-images/Patel & Company Visiting Card.jpg',
+      image: '/brand-images/Patel & Company Visiting Card.webp',
       isPlaceholder: false,
     },
   ];
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">
+      <SEO
+        title="Business Cards Portfolio | Creoviz Graphics Studio"
+        description="Browse our collection of premium visiting card designs, structured on standard dielines and print dimensions."
+        path="/work/business-cards"
+      />
       {/* =================================================
           1. HERO SECTION (Dark Theme)
           ================================================= */}
@@ -187,6 +193,7 @@ export const BusinessCardsPortfolio: React.FC = () => {
                         src={card.image}
                         alt={card.name}
                         className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-[#1B2450]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <div className="px-4 py-2 bg-white rounded-full text-[#1B2450] font-sans font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ZoomIn, ZoomOut, X } from 'lucide-react';
 import { Container } from '../components/ui/Container';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { SEO } from '../components/common/SEO';
 
 export const BannersPortfolio: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -43,6 +44,11 @@ export const BannersPortfolio: React.FC = () => {
 
   return (
     <div className="relative overflow-x-hidden bg-white text-left">
+      <SEO
+        title="Banners & Outdoor Ads Portfolio | Creoviz Graphics Studio"
+        description="Explore our collection of custom outdoor banners, shop flex layouts, and large-format digital advertisements."
+        path="/work/banners"
+      />
       {/* =================================================
           1. HERO SECTION (Dark Theme)
           ================================================= */}
@@ -72,15 +78,16 @@ export const BannersPortfolio: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Card 01: Car Wash Banner */}
             <div
-              onClick={() => openLightbox('/brand-images/Car Wash Banner.jpg')}
+              onClick={() => openLightbox('/brand-images/Car Wash Banner.webp')}
               className="group p-6 rounded-premium-lg bg-white border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left flex flex-col justify-between h-full cursor-pointer"
             >
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
                   <img
-                    src="/brand-images/Car Wash Banner.jpg"
+                    src="/brand-images/Car Wash Banner.webp"
                     alt="Car Wash Banner"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">
@@ -95,15 +102,16 @@ export const BannersPortfolio: React.FC = () => {
 
             {/* Card 02: KKPS Banner */}
             <div
-              onClick={() => openLightbox('/brand-images/KKPS Banner.jpg')}
+              onClick={() => openLightbox('/brand-images/KKPS Banner.webp')}
               className="group p-6 rounded-premium-lg bg-white border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left flex flex-col justify-between h-full cursor-pointer"
             >
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
                   <img
-                    src="/brand-images/KKPS Banner.jpg"
+                    src="/brand-images/KKPS Banner.webp"
                     alt="KKPS Banner"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">
