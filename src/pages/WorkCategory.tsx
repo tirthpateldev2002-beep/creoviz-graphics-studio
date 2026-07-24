@@ -137,6 +137,7 @@ export const WorkCategory: React.FC = () => {
                       src={project.heroImageUrl}
                       alt={`${project.name} Hero Mockup`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="p-4 w-full h-full flex items-center justify-center">
@@ -201,6 +202,7 @@ export const WorkCategory: React.FC = () => {
                   src={item.image}
                   alt={item.title}
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  loading="lazy"
                 />
               </div>
 

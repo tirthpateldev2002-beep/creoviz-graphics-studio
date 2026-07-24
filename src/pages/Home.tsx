@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Hero } from '../components/sections/Hero';
 import { Marquee } from '../components/sections/Marquee';
-import { Stats } from '../components/sections/Stats';
-import { WhatWeDo } from '../components/sections/WhatWeDo';
-
-import { Process } from '../components/sections/Process';
-import { Testimonials } from '../components/sections/Testimonials';
-import { FAQ } from '../components/sections/FAQ';
-import { CTA } from '../components/sections/CTA';
 import { SEO } from '../components/common/SEO';
+import { LazySection } from '../components/common/LazySection';
+
+// Dynamic imports for below-the-fold components to reduce initial JS bundle size
+const Stats = lazy(() => import('../components/sections/Stats').then(m => ({ default: m.Stats })));
+const WhatWeDo = lazy(() => import('../components/sections/WhatWeDo').then(m => ({ default: m.WhatWeDo })));
+const Process = lazy(() => import('../components/sections/Process').then(m => ({ default: m.Process })));
+const Testimonials = lazy(() => import('../components/sections/Testimonials').then(m => ({ default: m.Testimonials })));
+const FAQ = lazy(() => import('../components/sections/FAQ').then(m => ({ default: m.FAQ })));
+const CTA = lazy(() => import('../components/sections/CTA').then(m => ({ default: m.CTA })));
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -71,22 +73,46 @@ export const Home: React.FC = () => {
       <Marquee />
 
       {/* Numerical Metrics Countups */}
-      <Stats />
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <LazySection placeholderHeight="min-h-[200px]">
+          <Stats />
+        </LazySection>
+      </Suspense>
 
       {/* Brand Core Offerings */}
-      <WhatWeDo />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <LazySection placeholderHeight="min-h-[400px]">
+          <WhatWeDo />
+        </LazySection>
+      </Suspense>
 
       {/* Scrolling timeline methodology */}
-      <Process />
+      <Suspense fallback={<div className="min-h-[500px]" />}>
+        <LazySection placeholderHeight="min-h-[500px]">
+          <Process />
+        </LazySection>
+      </Suspense>
 
       {/* Testimonials google review style grid */}
-      <Testimonials />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <LazySection placeholderHeight="min-h-[400px]">
+          <Testimonials />
+        </LazySection>
+      </Suspense>
 
       {/* Accordion FAQ questions */}
-      <FAQ />
+      <Suspense fallback={<div className="min-h-[300px]" />}>
+        <LazySection placeholderHeight="min-h-[300px]">
+          <FAQ />
+        </LazySection>
+      </Suspense>
 
       {/* Final Inquiry triggers CTA */}
-      <CTA />
+      <Suspense fallback={<div className="min-h-[300px]" />}>
+        <LazySection placeholderHeight="min-h-[300px]">
+          <CTA />
+        </LazySection>
+      </Suspense>
     </div>
   );
 };

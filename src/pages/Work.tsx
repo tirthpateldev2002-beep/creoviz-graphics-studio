@@ -249,6 +249,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Deeps Beauty Paper Bag.png"
                   alt="Deep's Beauty Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-2xl text-[#1B2450] uppercase tracking-wide">
@@ -263,6 +264,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Deep's Skin Clinic Logo.jpg"
                   alt="Deep's Skin Clinic Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-2xl text-[#1B2450] uppercase tracking-wide">
@@ -319,6 +321,7 @@ export const Work: React.FC = () => {
                     src="/brand-images/Sunelite Mockup 1.png"
                     alt="Sunelite Pharma Mockup"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">
@@ -345,6 +348,7 @@ export const Work: React.FC = () => {
                     src="/brand-images/Maa Shakti Packaging Mockup 1.png"
                     alt="Maa Shakti Packaging Mockup"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                    loading="lazy"
                   />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide mb-4">
@@ -390,6 +394,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Creoviz Graphic Studio Business Card.png"
                   alt="Creoviz Graphic Studio Business Card"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide">
@@ -404,6 +409,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Creoviz Sticker Mockup.png"
                   alt="Creoviz Sticker Mockup"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide">
@@ -437,6 +443,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Brochure_Mockup_4.jpg"
                   alt="Brochure Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide">
@@ -451,6 +458,7 @@ export const Work: React.FC = () => {
                   src="/brand-images/Car Wash Banner.jpg"
                   alt="Banner Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
+                  loading="lazy"
                 />
               </div>
               <h3 className="font-display font-bold text-xl text-[#1B2450] uppercase tracking-wide">

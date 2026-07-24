@@ -264,5 +264,31 @@ ${message}
         }
       }
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom') || id.includes('react/') || id.includes('scheduler')) {
+                return 'vendor-react';
+              }
+              if (id.includes('react-router-dom') || id.includes('react-router') || id.includes('@remix-run')) {
+                return 'vendor-router';
+              }
+              if (id.includes('framer-motion')) {
+                return 'vendor-motion';
+              }
+              if (id.includes('lenis')) {
+                return 'vendor-lenis';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-lucide';
+              }
+              return 'vendor-others';
+            }
+          }
+        }
+      }
+    }
   }
 })

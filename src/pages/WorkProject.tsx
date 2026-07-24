@@ -484,6 +484,7 @@ export const WorkProject: React.FC = () => {
                     src={project.logoUrl}
                     alt={`${project.name} Logo`}
                     className="max-h-48 w-auto object-contain"
+                    loading="lazy"
                   />
                 ) : (
                   project.logoDesignSvg
