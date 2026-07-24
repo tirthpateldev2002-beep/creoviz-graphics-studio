@@ -10,7 +10,7 @@ export interface SEOProps {
   preloadImage?: string;
 }
 
-const DEFAULT_IMAGE = 'https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.png';
+const DEFAULT_IMAGE = 'https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.webp';
 const BASE_URL = 'https://creoviz-graphics-studio.vercel.app';
 
 export const SEO: React.FC<SEOProps> = ({

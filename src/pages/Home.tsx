@@ -23,7 +23,7 @@ const organizationSchema = {
     "url": "https://creoviz-graphics-studio.vercel.app/favicon.svg",
     "caption": "Creoviz Graphics Studio Logo"
   },
-  "image": "https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.png",
+  "image": "https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.webp",
   "description": "Creoviz is a premium creative agency specializing in logo design, brand identity systems, retail packaging box dielines, and high-performance digital interfaces.",
   "address": {
     "@type": "PostalAddress",
