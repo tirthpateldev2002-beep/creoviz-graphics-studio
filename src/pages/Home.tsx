@@ -61,8 +61,8 @@ export const Home: React.FC = () => {
   return (
     <div className="relative bg-bg-light">
       <SEO
-        title="Creoviz Graphics Studio | Premium Brand Identity & Packaging Design"
-        description="Creoviz is a premium creative agency specializing in logo design, brand identity systems, retail packaging box dielines, and high-performance digital interfaces."
+        title="Creoviz Graphics Studio | Premium Branding & Graphic Design Agency"
+        description="We help businesses build memorable brands through logo design, brand identity, packaging, print media, UI design, website design and social media creatives."
         path="/"
         schema={[organizationSchema, websiteSchema]}
       />
