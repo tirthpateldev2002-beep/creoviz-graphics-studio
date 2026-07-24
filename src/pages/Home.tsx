@@ -12,49 +12,78 @@ const Testimonials = lazy(() => import('../components/sections/Testimonials').th
 const FAQ = lazy(() => import('../components/sections/FAQ').then(m => ({ default: m.FAQ })));
 const CTA = lazy(() => import('../components/sections/CTA').then(m => ({ default: m.CTA })));
 
-const organizationSchema = {
+const homeSchemaGraph = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": "https://creoviz-graphics-studio.vercel.app/#organization",
-  "name": "Creoviz Graphics Studio",
-  "url": "https://creoviz-graphics-studio.vercel.app",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "https://creoviz-graphics-studio.vercel.app/favicon.svg",
-    "caption": "Creoviz Graphics Studio Logo"
-  },
-  "image": "https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.webp",
-  "description": "Creoviz is a premium creative agency specializing in logo design, brand identity systems, retail packaging box dielines, and high-performance digital interfaces.",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Bharuch",
-    "addressRegion": "Gujarat",
-    "addressCountry": "India"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+91-94090-73599",
-    "contactType": "sales",
-    "email": "creovizgraphic30@gmail.com",
-    "availableLanguage": ["English", "Hindi", "Gujarati"]
-  },
-  "sameAs": [
-    "https://www.instagram.com/creoviz_graphics_studio/",
-    "https://www.behance.net/creovizgraphics30",
-    "https://www.linkedin.com/in/tirth-patel-56030627a"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://creoviz-graphics-studio.vercel.app/#organization",
+      "name": "Creoviz Graphics Studio",
+      "url": "https://creoviz-graphics-studio.vercel.app",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://creoviz-graphics-studio.vercel.app/#logo",
+        "url": "https://creoviz-graphics-studio.vercel.app/favicon.svg",
+        "caption": "Creoviz Graphics Studio Logo"
+      },
+      "image": "https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.webp",
+      "description": "We help businesses build memorable brands through logo design, brand identity, packaging, print media, UI design, website design and social media creatives.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bharuch",
+        "addressRegion": "Gujarat",
+        "addressCountry": "India"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91 94090 73599",
+        "contactType": "sales",
+        "email": "creovizgraphics30@gmail.com",
+        "availableLanguage": ["English", "Hindi", "Gujarati"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/creoviz_graphics_studio/",
+        "https://www.linkedin.com/in/tirth-patel-56030627a",
+        "https://maps.google.com/?cid=creoviz_google_business_profile_placeholder"
+      ]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://creoviz-graphics-studio.vercel.app/#localbusiness",
+      "name": "Creoviz Graphics Studio",
+      "url": "https://creoviz-graphics-studio.vercel.app",
+      "logo": "https://creoviz-graphics-studio.vercel.app/favicon.svg",
+      "image": "https://creoviz-graphics-studio.vercel.app/brand-images/Creoviz%20Graphic%20Studio%20Business%20Card.webp",
+      "telephone": "+91 94090 73599",
+      "email": "creovizgraphics30@gmail.com",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Bharuch",
+        "addressLocality": "Bharuch",
+        "addressRegion": "Gujarat",
+        "addressCountry": "India"
+      },
+      "parentOrganization": {
+        "@id": "https://creoviz-graphics-studio.vercel.app/#organization"
+      },
+      "sameAs": [
+        "https://www.instagram.com/creoviz_graphics_studio/",
+        "https://www.linkedin.com/in/tirth-patel-56030627a",
+        "https://maps.google.com/?cid=creoviz_google_business_profile_placeholder"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://creoviz-graphics-studio.vercel.app/#website",
+      "url": "https://creoviz-graphics-studio.vercel.app",
+      "name": "Creoviz Graphics Studio",
+      "description": "We help businesses build memorable brands through logo design, brand identity, packaging, print media, UI design, website design and social media creatives.",
+      "publisher": {
+        "@id": "https://creoviz-graphics-studio.vercel.app/#organization"
+      }
+    }
   ]
-};
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://creoviz-graphics-studio.vercel.app/#website",
-  "url": "https://creoviz-graphics-studio.vercel.app",
-  "name": "Creoviz Graphics Studio",
-  "description": "Premium Brand Identity, Retail Packaging, and Modern Website Design",
-  "publisher": {
-    "@id": "https://creoviz-graphics-studio.vercel.app/#organization"
-  }
 };
 
 export const Home: React.FC = () => {
@@ -64,7 +93,7 @@ export const Home: React.FC = () => {
         title="Creoviz Graphics Studio | Premium Branding & Graphic Design Agency"
         description="We help businesses build memorable brands through logo design, brand identity, packaging, print media, UI design, website design and social media creatives."
         path="/"
-        schema={[organizationSchema, websiteSchema]}
+        schema={homeSchemaGraph}
       />
       {/* Home Hero Section */}
       <Hero />
