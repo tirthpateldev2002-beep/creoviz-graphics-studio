@@ -6,6 +6,7 @@ import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { WorkCTA } from '../components/sections/WorkCTA';
 import { SEO } from '../components/common/SEO';
+import { ResponsiveImage } from '../components/common/ResponsiveImage';
 
 // ----------------------------------------------------
 // Section 1 Hero — Re-using the exact original interactive illustration
@@ -245,7 +246,7 @@ export const Work: React.FC = () => {
             {/* Card 1: Deep's Beauty */}
             <Link to="/work/project/deeps-beauty" className="group relative rounded-premium-lg bg-white border border-[#1B2450]/6 p-6 flex flex-col hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500">
               <div className="overflow-hidden rounded-xl border border-[#1B2450]/5 bg-[#F7F7F8] aspect-[16/10] flex items-center justify-center mb-6 relative">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Deeps Beauty Paper Bag.webp"
                   alt="Deep's Beauty Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
@@ -260,7 +261,7 @@ export const Work: React.FC = () => {
             {/* Card 2: Deep's Skin Clinic */}
             <Link to="/work/project/deeps-skin-clinic" className="group relative rounded-premium-lg bg-white border border-[#1B2450]/6 p-6 flex flex-col hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500">
               <div className="overflow-hidden rounded-xl border border-[#1B2450]/5 bg-[#F7F7F8] aspect-[16/10] flex items-center justify-center mb-6 relative">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Deep's Skin Clinic Logo.webp"
                   alt="Deep's Skin Clinic Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
@@ -317,7 +318,7 @@ export const Work: React.FC = () => {
             >
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
-                  <img
+                  <ResponsiveImage
                     src="/brand-images/Sunelite Mockup 1.webp"
                     alt="Sunelite Pharma Mockup"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
@@ -344,7 +345,7 @@ export const Work: React.FC = () => {
             >
               <div>
                 <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
-                  <img
+                  <ResponsiveImage
                     src="/brand-images/Maa Shakti Packaging Mockup 1.webp"
                     alt="Maa Shakti Packaging Mockup"
                     className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
@@ -390,7 +391,7 @@ export const Work: React.FC = () => {
             {/* Card 1: Business Cards */}
             <Link to="/work/business-cards" className="group p-6 rounded-premium-lg bg-[#F8FAFC] border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left block">
               <div className="aspect-[16/10] bg-white border border-[#1B2450]/5 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Creoviz Graphic Studio Business Card.webp"
                   alt="Creoviz Graphic Studio Business Card"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
@@ -405,7 +406,7 @@ export const Work: React.FC = () => {
             {/* Card 2: Other Essentials */}
             <Link to="/work/business-essentials" className="group p-6 rounded-premium-lg bg-[#F8FAFC] border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left block">
               <div className="aspect-[16/10] bg-white border border-[#1B2450]/5 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Creoviz Sticker Mockup.webp"
                   alt="Creoviz Sticker Mockup"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
@@ -439,7 +440,7 @@ export const Work: React.FC = () => {
             {/* Card 1: Brochure */}
             <Link to="/work/brochures" className="group p-6 rounded-premium-lg bg-white border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left block">
               <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Brochure_Mockup_4.webp"
                   alt="Brochure Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"
@@ -454,7 +455,7 @@ export const Work: React.FC = () => {
             {/* Card 2: Banner */}
             <Link to="/work/banners" className="group p-6 rounded-premium-lg bg-white border border-[#1B2450]/6 hover:border-[#FF5A1F] hover:shadow-premium-md transition-all duration-500 text-left block">
               <div className="aspect-[16/10] bg-[#F7F7F8] border border-[#1B2450]/5 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
-                <img
+                <ResponsiveImage
                   src="/brand-images/Car Wash Banner.webp"
                   alt="Banner Cover"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-103"

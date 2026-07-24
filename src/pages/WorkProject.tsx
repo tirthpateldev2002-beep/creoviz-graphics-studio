@@ -7,6 +7,7 @@ import { Button } from '../components/ui/Button';
 import { PORTFOLIO_PROJECTS } from '../utils/portfolioData';
 import { WorkCTA } from '../components/sections/WorkCTA';
 import { SEO } from '../components/common/SEO';
+import { ResponsiveImage } from '../components/common/ResponsiveImage';
 
 interface ShowcaseItem {
   label: string;
@@ -238,7 +239,7 @@ export const WorkProject: React.FC = () => {
                       className="group w-full aspect-[16/9] rounded-2xl border border-[#1B2450]/8 bg-white shadow-premium-sm hover:border-[#FF5A1F] hover:shadow-premium-md hover:-translate-y-0.5 cursor-pointer flex flex-col items-center justify-center p-6 text-center select-none overflow-hidden relative transition-all duration-300"
                     >
                       {showcase.imageUrl ? (
-                        <img
+                        <ResponsiveImage
                           src={showcase.imageUrl}
                           alt={showcase.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
@@ -450,7 +451,7 @@ export const WorkProject: React.FC = () => {
             <div className="lg:col-span-7 flex justify-center relative w-full">
               <div className="w-full max-w-[540px] aspect-[16/10] rounded-2xl bg-[#F7F7F8]/5 border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.5)] flex items-center justify-center p-6 overflow-hidden">
                 {project.heroImageUrl ? (
-                  <img
+                  <ResponsiveImage
                     src={project.heroImageUrl}
                     alt={`${project.name} Hero`}
                     className="w-full h-full object-cover rounded-xl"
@@ -480,7 +481,7 @@ export const WorkProject: React.FC = () => {
             <div className="relative p-12 rounded-premium-lg border border-[#1B2450]/6 bg-[#F8FAFC] shadow-premium-sm inline-flex items-center justify-center min-w-[280px] max-w-md mx-auto">
               <div className="relative z-10 flex items-center justify-center">
                 {project.logoUrl ? (
-                  <img
+                  <ResponsiveImage
                     src={project.logoUrl}
                     alt={`${project.name} Logo`}
                     className="max-h-48 w-auto object-contain"
@@ -606,7 +607,7 @@ export const WorkProject: React.FC = () => {
                     className="group relative cursor-pointer overflow-hidden rounded-2xl border border-[#1B2450]/6 hover:border-[#FF5A1F] bg-white shadow-premium-md hover:shadow-[0_20px_50px_rgba(255,90,31,0.18)] hover:-translate-y-1 transition-all duration-500"
                   >
                     <div className="aspect-[16/10] overflow-hidden bg-[#F7F7F8] flex items-center justify-center">
-                      <img
+                      <ResponsiveImage
                         src={mockupUrl}
                         alt={`${project.name} Mockup ${idx + 1}`}
                         className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
@@ -669,7 +670,7 @@ export const WorkProject: React.FC = () => {
               className="relative w-full max-w-4xl aspect-[16/10] rounded-2xl overflow-hidden bg-black/10 border border-white/10 shadow-2xl flex items-center justify-center"
               onClick={e => e.stopPropagation()}
             >
-              <img
+              <ResponsiveImage
                 src={project.mockupUrls[lightboxIndex]}
                 alt={`${project.name} Mockup ${lightboxIndex + 1}`}
                 className="max-w-full max-h-full object-contain"

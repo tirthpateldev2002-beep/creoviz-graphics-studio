@@ -6,6 +6,7 @@ import { SEO } from '../components/common/SEO';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
 import { WorkCTA } from '../components/sections/WorkCTA';
+import { ResponsiveImage } from '../components/common/ResponsiveImage';
 import {
   PORTFOLIO_CATEGORIES,
   PORTFOLIO_PROJECTS,
@@ -133,7 +134,7 @@ export const WorkCategory: React.FC = () => {
               <div className="overflow-hidden rounded-xl border border-[#1B2450]/5 bg-[#F7F7F8] aspect-[16/10] flex items-center justify-center mb-6 relative">
                 <div className="w-full h-full transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 flex items-center justify-center">
                   {project.heroImageUrl ? (
-                    <img
+                    <ResponsiveImage
                       src={project.heroImageUrl}
                       alt={`${project.name} Hero Mockup`}
                       className="w-full h-full object-cover"
@@ -198,7 +199,7 @@ export const WorkCategory: React.FC = () => {
             >
               {/* Visual display */}
               <div className="aspect-[16/10] bg-[#F7F7F8] flex items-center justify-center border-b border-[#1B2450]/5 overflow-hidden">
-                <img
+                <ResponsiveImage
                   src={item.image}
                   alt={item.title}
                   className="w-full h-full object-cover transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
