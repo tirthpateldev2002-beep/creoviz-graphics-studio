@@ -5,9 +5,63 @@ import { Link } from 'react-router-dom';
 
 const WORDS = ["DESIGN", "BUILD", "ELEVATE"];
 
+interface FloatingCardProps {
+  card: {
+    title: string;
+    desc: string;
+    icon: React.ReactNode;
+    pos: string;
+    speed: string;
+    factor: number;
+  };
+  idx: number;
+  parallaxX: any;
+  parallaxY: any;
+  springConfig: any;
+}
+
+const FloatingCard: React.FC<FloatingCardProps> = ({
+  card,
+  idx,
+  parallaxX,
+  parallaxY,
+  springConfig,
+}) => {
+  const cardX = useSpring(useTransform(parallaxX, (v: number) => v * card.factor), springConfig);
+  const cardY = useSpring(useTransform(parallaxY, (v: number) => v * card.factor), springConfig);
+
+  return (
+    <motion.div
+      className={`absolute ${card.pos} pointer-events-auto`}
+      style={{ x: cardX, y: cardY }}
+    >
+      <div
+        style={{
+          animationDelay: `${idx * 0.4}s`,
+          animationDuration: `${5.5 + idx * 0.8}s`
+        }}
+        className={`${card.speed} bg-white/[0.06] max-lg:backdrop-blur-none lg:backdrop-blur-xl border border-white/[0.05] p-4 md:p-6 rounded-premium-md shadow-[0_16px_48px_rgba(0,0,0,0.3)] flex flex-col gap-3 min-w-[200px] md:min-w-[250px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2.5 hover:scale-[1.02] hover:rotate-2 hover:border-accent/40 hover:shadow-[0_16px_48px_rgba(255,81,0,0.12)] group`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-display font-semibold text-sm text-white uppercase transition-colors duration-300 group-hover:text-accent">
+            {card.title}
+          </span>
+          <div className="w-7 h-7 rounded-lg bg-accent/5 border border-accent/10 flex items-center justify-center transition-all duration-300 group-hover:rotate-12 group-hover:bg-accent/15">
+            {card.icon}
+          </div>
+        </div>
+        <p className="text-[10px] font-sans font-bold tracking-wider text-white/40 uppercase">
+          {card.desc}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+
 export const Hero: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [isMouseInHero, setIsMouseInHero] = useState(false);
+  const [isDeferred, setIsDeferred] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Scroll Parallax configuration
@@ -38,6 +92,25 @@ export const Hero: React.FC = () => {
     const interval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % WORDS.length);
     }, 2000);
+
+    // Defer non-critical animations and components until idle
+    const handleDefer = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => setIsDeferred(false));
+      } else {
+        setTimeout(() => setIsDeferred(false), 250);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      handleDefer();
+    } else {
+      window.addEventListener('load', handleDefer);
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener('load', handleDefer);
+      };
+    }
 
     return () => clearInterval(interval);
   }, []);
@@ -261,38 +334,16 @@ export const Hero: React.FC = () => {
           style={{ y: cardsParallaxY }}
           className="lg:col-span-5 h-[480px] md:h-[580px] relative w-full select-none"
         >
-          {cardsData.map((card, idx) => {
-            const cardX = useSpring(useTransform(parallaxX, (v) => v * card.factor), springConfig);
-            const cardY = useSpring(useTransform(parallaxY, (v) => v * card.factor), springConfig);
-
-            return (
-              <motion.div
-                key={idx}
-                className={`absolute ${card.pos} pointer-events-auto`}
-                style={{ x: cardX, y: cardY }}
-              >
-                <div
-                  style={{
-                    animationDelay: `${idx * 0.4}s`,
-                    animationDuration: `${5.5 + idx * 0.8}s`
-                  }}
-                  className={`${card.speed} bg-white/[0.03] backdrop-blur-xl border border-white/[0.05] p-4 md:p-6 rounded-premium-md shadow-[0_16px_48px_rgba(0,0,0,0.3)] flex flex-col gap-3 min-w-[200px] md:min-w-[250px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2.5 hover:scale-[1.02] hover:rotate-2 hover:border-accent/40 hover:shadow-[0_16px_48px_rgba(255,81,0,0.12)] group`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="font-display font-semibold text-sm text-white uppercase transition-colors duration-300 group-hover:text-accent">
-                      {card.title}
-                    </span>
-                    <div className="w-7 h-7 rounded-lg bg-accent/5 border border-accent/10 flex items-center justify-center transition-all duration-300 group-hover:rotate-12 group-hover:bg-accent/15">
-                      {card.icon}
-                    </div>
-                  </div>
-                  <p className="text-[10px] font-sans font-bold tracking-wider text-white/40 uppercase">
-                    {card.desc}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+          {!isDeferred && cardsData.map((card, idx) => (
+            <FloatingCard
+              key={idx}
+              card={card}
+              idx={idx}
+              parallaxX={parallaxX}
+              parallaxY={parallaxY}
+              springConfig={springConfig}
+            />
+          ))}
         </motion.div>
       </div>
     </section>

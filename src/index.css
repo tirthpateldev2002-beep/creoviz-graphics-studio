@@ -153,6 +153,15 @@
   .animate-particle-drift {
     animation: drift 12s ease-in-out infinite;
   }
+  
+  @media (max-width: 1023px) {
+    .animate-glow-breathe,
+    .animate-particle-drift,
+    .animate-float,
+    .animate-float-delayed {
+      animation: none !important;
+    }
+  }
   .animate-light-sweep {
     animation: light-sweep 4s ease-in-out infinite;
   }
