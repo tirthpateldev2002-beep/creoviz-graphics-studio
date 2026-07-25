@@ -16,6 +16,7 @@ const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.S
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail').then(m => ({ default: m.ServiceDetail })));
 const Packages = lazy(() => import('./pages/Packages').then(m => ({ default: m.Packages })));
 const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
+const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 
 const LoadingFallback = () => (
   <div className="w-full min-h-[60vh] flex items-center justify-center bg-white">
@@ -42,7 +43,7 @@ function App() {
             <Route path="services/:serviceId" element={<ServiceDetail />} />
             <Route path="packages" element={<Packages />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Suspense>
