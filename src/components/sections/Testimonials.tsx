@@ -6,7 +6,7 @@ import { Star, Quote } from 'lucide-react';
 export const Testimonials: React.FC = () => {
   const reviews = [
     {
-      author: 'Deepia Raj',
+      author: 'Deepu Raj',
       initials: 'DR',
       role: "Founder, Deep's Beauty & Deep's Skin Clinic",
       text: 'Creoviz delivered exactly what our brand needed. From custom business cards and premium paper bags to logo design and clinic branding, every detail was handled professionally. The final print quality exceeded our expectations and gave our brand a polished identity.',
