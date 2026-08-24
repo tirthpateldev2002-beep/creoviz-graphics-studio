@@ -14,10 +14,20 @@ import { ResponsiveImage } from '../components/common/ResponsiveImage';
 interface WorkHeroVisualProps {
   mouseX: any;
   mouseY: any;
+  isMobile: boolean;
 }
 
-const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
+const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY, isMobile }) => {
   const springConfig = { damping: 55, stiffness: 140, mass: 0.7 };
+  const tx1 = useTransform(mouseX, (v: number) => v * 0.4);
+  const ty1 = useTransform(mouseY, (v: number) => v * 0.4);
+  const tx2 = useTransform(mouseX, (v: number) => -v * 0.6);
+  const ty2 = useTransform(mouseY, (v: number) => -v * 0.6);
+  const sx1 = useSpring(useTransform(mouseX, (v: number) => v * 1.3), springConfig);
+  const sy1 = useSpring(useTransform(mouseY, (v: number) => v * 1.3), springConfig);
+  const sx2 = useSpring(useTransform(mouseX, (v: number) => -v * 1.2), springConfig);
+  const sy2 = useSpring(useTransform(mouseY, (v: number) => -v * 1.2), springConfig);
+
   return (
     <div className="relative w-full max-w-[480px] aspect-square mx-auto flex items-center justify-center pointer-events-auto">
       {/* Soft orange ambient radial glow spot */}
@@ -26,8 +36,8 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
       {/* Orbiting circular strokes in the background */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => v * 0.4),
-          y: useTransform(mouseY, (v: number) => v * 0.4),
+          x: isMobile ? 0 : tx1,
+          y: isMobile ? 0 : ty1,
           rotate: 20
         }}
         className="absolute w-[350px] h-[350px] rounded-full border border-white/5 flex items-center justify-center"
@@ -38,8 +48,8 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
 
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 0.6),
-          y: useTransform(mouseY, (v: number) => -v * 0.6),
+          x: isMobile ? 0 : tx2,
+          y: isMobile ? 0 : ty2,
           rotate: -40
         }}
         className="absolute w-[280px] h-[280px] rounded-full border border-dashed border-white/10 flex items-center justify-center"
@@ -49,8 +59,8 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
 
       {/* Main Core Showcase Panel: A stylized stack of portfolio canvas */}
       <motion.div
-        animate={{ y: [-8, 8, -8] }}
-        transition={{ duration: 6.5, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [-8, 8, -8] }}
+        transition={isMobile ? {} : { duration: 6.5, ease: "easeInOut", repeat: Infinity }}
         className="absolute w-56 h-56 bg-[#141B3B]/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_24px_48px_rgba(0,0,0,0.4)] p-6 z-10 flex flex-col justify-between"
       >
         {/* Abstract blueprint grid layout inside */}
@@ -84,11 +94,11 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
       {/* Floating Card 1: Branding Pack (Top Left) */}
       <motion.div
         style={{
-          x: useSpring(useTransform(mouseX, (v: number) => v * 1.3), springConfig),
-          y: useSpring(useTransform(mouseY, (v: number) => v * 1.3), springConfig)
+          x: isMobile ? 0 : sx1,
+          y: isMobile ? 0 : sy1
         }}
-        animate={{ y: [12, -12, 12] }}
-        transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [12, -12, 12] }}
+        transition={isMobile ? {} : { duration: 7, ease: "easeInOut", repeat: Infinity }}
         className="absolute -top-[5%] -left-[3%] p-3.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex items-center gap-2 pointer-events-none min-w-[140px] text-left"
       >
         <div className="w-6 h-6 rounded-lg bg-[#FF5A1F]/20 flex items-center justify-center text-[#FF5A1F]"><Palette className="w-3.5 h-3.5" /></div>
@@ -101,11 +111,11 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
       {/* Floating Card 2: Website Layout (Right Side) */}
       <motion.div
         style={{
-          x: useSpring(useTransform(mouseX, (v: number) => -v * 1.2), springConfig),
-          y: useSpring(useTransform(mouseY, (v: number) => -v * 1.2), springConfig)
+          x: isMobile ? 0 : sx2,
+          y: isMobile ? 0 : sy2
         }}
-        animate={{ y: [-15, 15, -15] }}
-        transition={{ duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+        animate={isMobile ? {} : { y: [-15, 15, -15] }}
+        transition={isMobile ? {} : { duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
         className="absolute top-[25%] -right-[8%] p-3.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex items-center gap-2 pointer-events-none min-w-[150px] text-left"
       >
         <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white"><Laptop className="w-3.5 h-3.5" /></div>
@@ -120,6 +130,16 @@ const WorkHeroVisual: React.FC<WorkHeroVisualProps> = ({ mouseX, mouseY }) => {
 
 export const Work: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mouse Coordinates for Hero
   const mouseX = useMotionValue(0);
@@ -129,7 +149,7 @@ export const Work: React.FC = () => {
   const parallaxY = useSpring(mouseY, springConfig);
 
   const handleMouseMoveHero = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const xNormalized = (e.clientX - rect.left) / rect.width - 0.5;
     const yNormalized = (e.clientY - rect.top) / rect.height - 0.5;
@@ -230,7 +250,7 @@ export const Work: React.FC = () => {
 
             {/* Right Interactive Artwork */}
             <div className="lg:col-span-5 flex justify-center">
-              <WorkHeroVisual mouseX={parallaxX} mouseY={parallaxY} />
+              <WorkHeroVisual mouseX={parallaxX} mouseY={parallaxY} isMobile={isMobile} />
             </div>
           </div>
         </Container>

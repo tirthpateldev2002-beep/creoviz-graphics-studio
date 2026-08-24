@@ -67,9 +67,17 @@ const Counter: React.FC<CounterProps> = ({ target, suffix = '' }) => {
 interface HeroIllustrationProps {
   mouseX: any;
   mouseY: any;
+  isMobile: boolean;
 }
 
-const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) => {
+const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY, isMobile }) => {
+  const tx1 = useTransform(mouseX, (v: number) => -v * 0.8);
+  const ty1 = useTransform(mouseY, (v: number) => -v * 0.8);
+  const tx2 = useTransform(mouseX, (v: number) => v * 1.4);
+  const ty2 = useTransform(mouseY, (v: number) => v * 1.4);
+  const tx3 = useTransform(mouseX, (v: number) => -v * 1.1);
+  const ty3 = useTransform(mouseY, (v: number) => -v * 1.1);
+
   return (
     <div className="relative w-full max-w-[450px] aspect-square mx-auto flex items-center justify-center pointer-events-auto">
       {/* Background glow blur */}
@@ -77,7 +85,11 @@ const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) =
 
       {/* Orbiting ring 1 */}
       <motion.div
-        style={{ x: mouseX, y: mouseY, rotate: 30 }}
+        style={{
+          x: isMobile ? 0 : mouseX,
+          y: isMobile ? 0 : mouseY,
+          rotate: 30
+        }}
         className="absolute w-[320px] h-[320px] rounded-full border border-white/10 flex items-center justify-center"
       >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-accent rounded-full shadow-[0_0_15px_#FF5A1F]" />
@@ -86,8 +98,8 @@ const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) =
       {/* Orbiting ring 2 */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 0.8),
-          y: useTransform(mouseY, (v: number) => -v * 0.8),
+          x: isMobile ? 0 : tx1,
+          y: isMobile ? 0 : ty1,
           rotate: -45
         }}
         className="absolute w-[240px] h-[240px] rounded-full border border-white/5 flex items-center justify-center"
@@ -97,8 +109,8 @@ const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) =
 
       {/* Central Brand Core (Creoviz Icon Png) */}
       <motion.div
-        animate={{ scale: [1, 1.04, 1] }}
-        transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { scale: [1, 1.04, 1] }}
+        transition={isMobile ? {} : { duration: 5, ease: "easeInOut", repeat: Infinity }}
         className="absolute w-36 h-36 rounded-full bg-[#141B3B]/60 backdrop-blur-xl border border-white/10 shadow-[0_12px_48px_rgba(0,0,0,0.4)] flex items-center justify-center z-10"
       >
         {/* Subtle orange glow behind the icon */}
@@ -115,11 +127,11 @@ const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) =
       {/* Floating Glassmorphic Panel 1 */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => v * 1.4),
-          y: useTransform(mouseY, (v: number) => v * 1.4)
+          x: isMobile ? 0 : tx2,
+          y: isMobile ? 0 : ty2
         }}
-        animate={{ y: [-15, 10, -15] }}
-        transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [-15, 10, -15] }}
+        transition={isMobile ? {} : { duration: 7, ease: "easeInOut", repeat: Infinity }}
         className="absolute top-[10%] left-[2%] p-4 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-lg z-20 flex flex-col gap-1.5 pointer-events-none"
       >
         <div className="flex flex-col gap-1">
@@ -134,11 +146,11 @@ const HeroIllustration: React.FC<HeroIllustrationProps> = ({ mouseX, mouseY }) =
       {/* Floating Glassmorphic Panel 2 */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 1.1),
-          y: useTransform(mouseY, (v: number) => -v * 1.1)
+          x: isMobile ? 0 : tx3,
+          y: isMobile ? 0 : ty3
         }}
-        animate={{ y: [12, -12, 12] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+        animate={isMobile ? {} : { y: [12, -12, 12] }}
+        transition={isMobile ? {} : { duration: 6, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
         className="absolute bottom-[12%] right-[2%] p-4 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl shadow-lg z-20 flex flex-col gap-1.5 pointer-events-none"
       >
         <div className="flex flex-col gap-1">
@@ -235,6 +247,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, idx
 // ----------------------------------------------------
 export const About: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mouse Parallax values for Hero Section
   const mouseX = useMotionValue(0);
@@ -244,7 +266,7 @@ export const About: React.FC = () => {
   const parallaxY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const xNormalized = (e.clientX - rect.left) / rect.width - 0.5;
     const yNormalized = (e.clientY - rect.top) / rect.height - 0.5;
@@ -371,9 +393,9 @@ export const About: React.FC = () => {
               </motion.div>
             </div>
 
-            {/* Right Content */}
+            {/* Right Interactive Artwork */}
             <div className="lg:col-span-5 flex justify-center">
-              <HeroIllustration mouseX={parallaxX} mouseY={parallaxY} />
+              <HeroIllustration mouseX={parallaxX} mouseY={parallaxY} isMobile={isMobile} />
             </div>
           </div>
         </Container>

@@ -78,7 +78,20 @@ export const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
   }, [location, navType]);
 
   useEffect(() => {
-    // Initialize Lenis smooth scroll with luxurious, smooth parameters
+    // Detect touch / mobile devices to bypass Lenis smooth scroll
+    const isTouchDevice = 
+      (typeof window !== 'undefined') && (
+        window.matchMedia('(pointer: coarse)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.innerWidth < 768
+      );
+
+    if (isTouchDevice) {
+      return;
+    }
+
+    // Initialize Lenis smooth scroll with luxurious, smooth parameters for desktop
     const lenis = new Lenis({
       duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Premium exponential ease-out

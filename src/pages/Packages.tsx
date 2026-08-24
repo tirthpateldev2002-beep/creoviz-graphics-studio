@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/common/SEO';
@@ -31,19 +31,30 @@ const PackageCard: React.FC<{ pkg: PackageData; idx: number }> = ({ pkg, idx }) 
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: '-60px' });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (isMobile || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) - 0.5; // -0.5 to 0.5
     const y = ((e.clientY - rect.top) / rect.height) - 0.5; // -0.5 to 0.5
     const maxTilt = 4; // degrees
     setTilt({ rotateX: -y * maxTilt, rotateY: x * maxTilt });
-  }, []);
+  }, [isMobile]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isMobile) return;
     setTilt({ rotateX: 0, rotateY: 0 });
-  }, []);
+  }, [isMobile]);
 
   return (
     <motion.div
@@ -52,7 +63,7 @@ const PackageCard: React.FC<{ pkg: PackageData; idx: number }> = ({ pkg, idx }) 
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        transform: `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+        transform: isMobile ? 'none' : `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
         transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
       onMouseMove={handleMouseMove}
@@ -182,10 +193,21 @@ const WebsiteMockupArtwork = () => {
 interface PackagesHeroVisualProps {
   mouseX: any;
   mouseY: any;
+  isMobile: boolean;
 }
 
-const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY }) => {
+const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY, isMobile }) => {
   const springConfig = { damping: 55, stiffness: 140, mass: 0.7 };
+  const tx1 = useTransform(mouseX, (v: number) => v * 0.4);
+  const ty1 = useTransform(mouseY, (v: number) => v * 0.4);
+  const tx2 = useTransform(mouseX, (v: number) => -v * 0.6);
+  const ty2 = useTransform(mouseY, (v: number) => -v * 0.6);
+  const sx1 = useSpring(useTransform(mouseX, (v: number) => v * 1.3), springConfig);
+  const sy1 = useSpring(useTransform(mouseY, (v: number) => v * 1.3), springConfig);
+  const sx2 = useSpring(useTransform(mouseX, (v: number) => -v * 1.2), springConfig);
+  const sy2 = useSpring(useTransform(mouseY, (v: number) => -v * 1.2), springConfig);
+  const sx3 = useSpring(useTransform(mouseX, (v: number) => v * 0.9), springConfig);
+  const sy3 = useSpring(useTransform(mouseY, (v: number) => v * 0.9), springConfig);
   return (
     <div className="relative w-full max-w-[480px] aspect-square mx-auto flex items-center justify-center pointer-events-auto">
       {/* Soft orange ambient radial glow spot */}
@@ -194,8 +216,8 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
       {/* Orbiting circular strokes in the background */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => v * 0.4),
-          y: useTransform(mouseY, (v: number) => v * 0.4),
+          x: isMobile ? 0 : tx1,
+          y: isMobile ? 0 : ty1,
           rotate: 20
         }}
         className="absolute w-[350px] h-[350px] rounded-full border border-white/5 flex items-center justify-center"
@@ -206,8 +228,8 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
 
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 0.6),
-          y: useTransform(mouseY, (v: number) => -v * 0.6),
+          x: isMobile ? 0 : tx2,
+          y: isMobile ? 0 : ty2,
           rotate: -40
         }}
         className="absolute w-[280px] h-[280px] rounded-full border border-dashed border-white/10 flex items-center justify-center"
@@ -217,8 +239,8 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
 
       {/* Main Core Showcase Panel: A stylized stack of service folders/mockups */}
       <motion.div
-        animate={{ y: [-8, 8, -8] }}
-        transition={{ duration: 6.5, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [-8, 8, -8] }}
+        transition={isMobile ? {} : { duration: 6.5, ease: "easeInOut", repeat: Infinity }}
         className="absolute w-56 h-56 bg-[#141B3B]/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_24px_48px_rgba(0,0,0,0.4)] p-6 z-10 flex flex-col justify-between"
       >
         {/* Abstract blueprint grid layout inside */}
@@ -254,11 +276,11 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
       {/* Floating Card 1: Branding Pack (Top Left) */}
       <motion.div
         style={{
-          x: useSpring(useTransform(mouseX, (v: number) => v * 1.3), springConfig),
-          y: useSpring(useTransform(mouseY, (v: number) => v * 1.3), springConfig)
+          x: isMobile ? 0 : sx1,
+          y: isMobile ? 0 : sy1
         }}
-        animate={{ y: [12, -12, 12] }}
-        transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [12, -12, 12] }}
+        transition={isMobile ? {} : { duration: 7, ease: "easeInOut", repeat: Infinity }}
         className="absolute -top-[5%] -left-[3%] p-3.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex flex-col gap-2 pointer-events-none min-w-[140px] text-left"
       >
         <div className="flex justify-between items-center">
@@ -278,11 +300,11 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
       {/* Floating Card 2: Website Layout (Right Side) */}
       <motion.div
         style={{
-          x: useSpring(useTransform(mouseX, (v: number) => -v * 1.2), springConfig),
-          y: useSpring(useTransform(mouseY, (v: number) => -v * 1.2), springConfig)
+          x: isMobile ? 0 : sx2,
+          y: isMobile ? 0 : sy2
         }}
-        animate={{ y: [-15, 15, -15] }}
-        transition={{ duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+        animate={isMobile ? {} : { y: [-15, 15, -15] }}
+        transition={isMobile ? {} : { duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
         className="absolute top-[25%] -right-[8%] p-3.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex flex-col gap-2 pointer-events-none min-w-[155px] text-left"
       >
         <div className="flex justify-between items-center">
@@ -299,11 +321,11 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
       {/* Floating Card 3: Social & Marketing Creatives (Bottom Left) */}
       <motion.div
         style={{
-          x: useSpring(useTransform(mouseX, (v: number) => v * 0.9), springConfig),
-          y: useSpring(useTransform(mouseY, (v: number) => v * 0.9), springConfig)
+          x: isMobile ? 0 : sx3,
+          y: isMobile ? 0 : sy3
         }}
-        animate={{ y: [10, -10, 10] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity, delay: 0.2 }}
+        animate={isMobile ? {} : { y: [10, -10, 10] }}
+        transition={isMobile ? {} : { duration: 6, ease: "easeInOut", repeat: Infinity, delay: 0.2 }}
         className="absolute -bottom-[5%] left-[2%] p-3.5 bg-[#141B3B]/80 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex flex-col gap-2 pointer-events-none min-w-[145px] text-left"
       >
         <div className="flex justify-between items-center">
@@ -324,6 +346,16 @@ const PackagesHeroVisual: React.FC<PackagesHeroVisualProps> = ({ mouseX, mouseY 
 // ----------------------------------------------------
 export const Packages: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mouse Coordinates for Hero
   const mouseX = useMotionValue(0);
@@ -333,7 +365,7 @@ export const Packages: React.FC = () => {
   const parallaxY = useSpring(mouseY, springConfig);
 
   const handleMouseMoveHero = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const xNormalized = (e.clientX - rect.left) / rect.width - 0.5;
     const yNormalized = (e.clientY - rect.top) / rect.height - 0.5;
@@ -436,7 +468,7 @@ export const Packages: React.FC = () => {
 
             {/* Right Interactive Artwork */}
             <div className="lg:col-span-5 flex justify-center">
-              <PackagesHeroVisual mouseX={parallaxX} mouseY={parallaxY} />
+              <PackagesHeroVisual mouseX={parallaxX} mouseY={parallaxY} isMobile={isMobile} />
             </div>
           </div>
         </Container>

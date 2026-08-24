@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { CardHeader, CardContent, CardFooter } from './Card';
 import { ArrowRight } from 'lucide-react';
 
@@ -14,18 +14,30 @@ interface ServiceProps {
 // Reusable ServiceCard with premium glass styling, hover, and mouse‑tilt effect
 export const ServiceCard: React.FC<ServiceProps> = ({ service }) => {
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) - 0.5; // -0.5 .. 0.5
     const y = ((e.clientY - rect.top) / rect.height) - 0.5;
     const maxTilt = 6; // degrees
     setTilt({ rotateX: -y * maxTilt, rotateY: x * maxTilt });
-  }, []);
+  }, [isMobile]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isMobile) return;
     setTilt({ rotateX: 0, rotateY: 0 });
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
@@ -44,12 +56,12 @@ export const ServiceCard: React.FC<ServiceProps> = ({ service }) => {
       {/* The main glassmorphic card on top */}
       <div
         style={{
-          background: 'rgba(27,36,80,0.38)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: isMobile ? 'rgba(27,36,80,0.92)' : 'rgba(27,36,80,0.38)',
+          backdropFilter: isMobile ? 'none' : 'blur(20px)',
+          WebkitBackdropFilter: isMobile ? 'none' : 'blur(20px)',
           borderRadius: '22px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.22)',
-          transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+          transform: isMobile ? 'none' : `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
           transition: 'transform 0.35s ease-out, border-color 0.3s ease-out, background-color 0.3s ease-out',
         }}
         className="relative z-10 h-full flex flex-col justify-between p-6 md:p-8 border border-white/10 rounded-[22px] hover:border-[#FF5A1F] hover:bg-[rgba(27,36,80,0.52)] transition-all duration-300 cursor-pointer"

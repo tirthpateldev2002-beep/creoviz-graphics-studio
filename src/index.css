@@ -146,6 +146,7 @@
   }
   .animate-marquee {
     animation: marquee 20s linear infinite; /* Slightly faster scroll pace */
+    will-change: transform;
   }
   .animate-glow-breathe {
     animation: breathe 12s ease-in-out infinite;
@@ -158,10 +159,33 @@
     .animate-glow-breathe,
     .animate-particle-drift,
     .animate-float,
-    .animate-float-delayed {
+    .animate-float-delayed,
+    .animate-concentric-pulse {
       animation: none !important;
     }
   }
+  
+  @media (max-width: 767px) {
+    /* Disable backdrop-filter globally on mobile devices to prevent major Safari compositing lag */
+    *, *::before, *::after {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+
+  /* Support for prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: scroll !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+
   .animate-light-sweep {
     animation: light-sweep 4s ease-in-out infinite;
   }

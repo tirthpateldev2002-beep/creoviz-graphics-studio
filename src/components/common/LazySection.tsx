@@ -9,7 +9,7 @@ interface LazySectionProps {
 export const LazySection: React.FC<LazySectionProps> = ({
   children,
   placeholderHeight = 'min-h-[200px]',
-  rootMargin = '200px 0px',
+  rootMargin = '600px 0px',
 }) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

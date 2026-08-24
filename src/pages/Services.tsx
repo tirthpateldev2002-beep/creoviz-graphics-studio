@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/common/SEO';
@@ -36,9 +36,19 @@ import { CTA } from '../components/sections/CTA';
 interface HeroArtworkProps {
   mouseX: any;
   mouseY: any;
+  isMobile: boolean;
 }
 
-const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
+const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY, isMobile }) => {
+  const tx1 = useTransform(mouseX, (v: number) => v * 0.5);
+  const ty1 = useTransform(mouseY, (v: number) => v * 0.5);
+  const tx2 = useTransform(mouseX, (v: number) => -v * 0.6);
+  const ty2 = useTransform(mouseY, (v: number) => -v * 0.6);
+  const tx3 = useTransform(mouseX, (v: number) => v * 1.2);
+  const ty3 = useTransform(mouseY, (v: number) => v * 1.2);
+  const tx4 = useTransform(mouseX, (v: number) => -v * 0.9);
+  const ty4 = useTransform(mouseY, (v: number) => -v * 0.9);
+
   return (
     <div className="relative w-full max-w-[500px] aspect-square mx-auto flex items-center justify-center pointer-events-none select-none">
       {/* Background radial soft light */}
@@ -46,7 +56,11 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
 
       {/* Outer Orbiting Blueprint Circles */}
       <motion.div
-        style={{ x: useTransform(mouseX, (v: number) => v * 0.5), y: useTransform(mouseY, (v: number) => v * 0.5), rotate: 45 }}
+        style={{
+          x: isMobile ? 0 : tx1,
+          y: isMobile ? 0 : ty1,
+          rotate: 45
+        }}
         className="absolute w-[360px] h-[360px] rounded-full border border-white/5 flex items-center justify-center"
       >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#FF5A1F] rounded-full shadow-[0_0_10px_#FF5A1F]" />
@@ -55,8 +69,8 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
 
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 0.6),
-          y: useTransform(mouseY, (v: number) => -v * 0.6),
+          x: isMobile ? 0 : tx2,
+          y: isMobile ? 0 : ty2,
           rotate: -30
         }}
         className="absolute w-[280px] h-[280px] rounded-full border border-dashed border-white/10 flex items-center justify-center"
@@ -66,8 +80,8 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
 
       {/* Main Drawing board element representing Design process */}
       <motion.div
-        animate={{ y: [-10, 10, -10] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [-10, 10, -10] }}
+        transition={isMobile ? {} : { duration: 6, ease: "easeInOut", repeat: Infinity }}
         className="absolute w-64 h-64 bg-[#141B3B]/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_24px_48px_rgba(0,0,0,0.4)] p-6 z-10 pointer-events-auto"
       >
         {/* Decorative Grid Lines */}
@@ -87,7 +101,7 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
             strokeLinecap="round"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
+            transition={isMobile ? {} : { duration: 2, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
           />
 
           {/* Anchor Points */}
@@ -125,11 +139,11 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
       {/* Floating element 1: Brand Swatches */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => v * 1.2),
-          y: useTransform(mouseY, (v: number) => v * 1.2)
+          x: isMobile ? 0 : tx3,
+          y: isMobile ? 0 : ty3
         }}
-        animate={{ y: [15, -15, 15] }}
-        transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+        animate={isMobile ? {} : { y: [15, -15, 15] }}
+        transition={isMobile ? {} : { duration: 7, ease: "easeInOut", repeat: Infinity }}
         className="absolute top-1/4 left-0 p-3 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex flex-col gap-2 pointer-events-none"
       >
         <span className="font-display font-bold text-[8px] text-white/60 tracking-wider">SWATCHES</span>
@@ -143,11 +157,11 @@ const HeroArtwork: React.FC<HeroArtworkProps> = ({ mouseX, mouseY }) => {
       {/* Floating element 2: Layout Guide */}
       <motion.div
         style={{
-          x: useTransform(mouseX, (v: number) => -v * 0.9),
-          y: useTransform(mouseY, (v: number) => -v * 0.9)
+          x: isMobile ? 0 : tx4,
+          y: isMobile ? 0 : ty4
         }}
-        animate={{ y: [-12, 12, -12] }}
-        transition={{ duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+        animate={isMobile ? {} : { y: [-12, 12, -12] }}
+        transition={isMobile ? {} : { duration: 8, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
         className="absolute bottom-[10%] right-0 p-3 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl shadow-lg z-20 flex items-center gap-2 pointer-events-none"
       >
         <Maximize2 className="w-3.5 h-3.5 text-[#FF5A1F]" />
@@ -232,6 +246,16 @@ export const Services: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const workflowRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mouse Parallax values for Hero Section
   const mouseX = useMotionValue(0);
@@ -241,7 +265,7 @@ export const Services: React.FC = () => {
   const parallaxY = useSpring(mouseY, springConfig);
 
   const handleMouseMoveHero = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!heroRef.current) return;
+    if (isMobile || !heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
     const xNormalized = (e.clientX - rect.left) / rect.width - 0.5;
     const yNormalized = (e.clientY - rect.top) / rect.height - 0.5;
@@ -508,7 +532,7 @@ export const Services: React.FC = () => {
 
             {/* Right Interactive Artwork */}
             <div className="lg:col-span-5 flex justify-center">
-              <HeroArtwork mouseX={parallaxX} mouseY={parallaxY} />
+              <HeroArtwork mouseX={parallaxX} mouseY={parallaxY} isMobile={isMobile} />
             </div>
           </div>
         </Container>

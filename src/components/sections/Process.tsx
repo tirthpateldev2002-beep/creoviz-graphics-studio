@@ -11,8 +11,8 @@ export const Process: React.FC = () => {
     offset: ['start end', 'end start'],
   });
 
-  // Calculate progress lines
-  const lineWidth = useTransform(scrollYProgress, [0.15, 0.75], ['0%', '100%']);
+  // Calculate progress scale (0 to 1) for GPU-accelerated transform animations
+  const lineScale = useTransform(scrollYProgress, [0.15, 0.75], [0, 1]);
 
   // Update active step dynamically on scroll
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -103,15 +103,15 @@ export const Process: React.FC = () => {
           {/* Progress Connecting Line (Desktop) */}
           <div className="absolute top-8 left-0 w-full h-[1px] bg-white/10 hidden lg:block" />
           <motion.div
-            className="absolute top-8 left-0 h-[1px] bg-accent hidden lg:block"
-            style={{ width: lineWidth }}
+            className="absolute top-8 left-0 h-[1px] bg-accent hidden lg:block w-full"
+            style={{ scaleX: lineScale, transformOrigin: 'left' }}
           />
 
           {/* Progress Connecting Line (Mobile/Tablet vertical) */}
           <div className="absolute left-8 top-0 w-[1px] h-full bg-white/10 lg:hidden" />
           <motion.div
-            className="absolute left-8 top-0 w-[1px] bg-accent lg:hidden"
-            style={{ height: lineWidth }}
+            className="absolute left-8 top-0 w-[1px] bg-accent lg:hidden h-full"
+            style={{ scaleY: lineScale, transformOrigin: 'top' }}
           />
 
           {/* Steps Loop */}
